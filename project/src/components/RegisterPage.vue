@@ -1,0 +1,170 @@
+<template>
+    <div class="register-wrapper">
+      <div class="register-card">
+        <h2><span class="icon">📝</span>立即註冊</h2>
+        <form @submit.prevent="register" class="register-form">
+          <input v-model="username" placeholder="👤 使用者名稱" required />
+          <input v-model="password" type="password" placeholder="🔒 密碼" required />
+          <input v-model="email" type="email" placeholder="📧 電子信箱" required />
+          <button type="submit">註冊</button>
+          <p v-if="error" class="error">{{ error }}</p>
+          <p v-if="success" class="success">{{ success }}</p>
+        </form>
+        <p class="login-link">
+          已有帳號？<a @click="goToLogin">立即登入</a>
+        </p>
+      </div>
+    </div>
+  </template>
+   
+  <script>
+  import axios from 'axios';
+   
+  export default {
+    name: "RegisterPage",
+    data() {
+      return {
+        username: "",
+        password: "",
+        email: "",
+        error: "",
+        success: "",
+        loading: false
+      };
+    },
+    methods: {
+      async register() {
+        this.loading = true;
+        try {
+          await axios.post("http://localhost:8080/api/register", {
+            username: this.username,
+            password: this.password,
+            email: this.email
+          });
+          this.success = "🎉 註冊成功，即將導向登入畫面";
+          this.error = "";
+          setTimeout(() => {
+            this.$router.push("/login");
+          }, 1500);
+        } catch (err) {
+          this.error = "⚠️ 註冊失敗，帳號或信箱可能已存在。";
+          this.success = "";
+        } finally {
+          this.loading = false;
+        }
+      },
+      goToLogin() {
+        this.$router.push("/login");
+      }
+    }
+  };
+  </script>
+   
+  <style scoped>
+  .register-wrapper {
+  position: relative;
+  min-height: 100vh;
+  background-image: url('/public/photo.png');
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+   
+  .register-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+  }
+   
+  .register-card h2 {
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #333;
+    font-weight: bold;
+  }
+   
+  .icon {
+    font-size: 28px;
+    margin-right: 8px;
+  }
+   
+  .register-form input {
+    display: block;
+    width: 93%;
+    margin: 12px 0;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #f9f9f9;
+    transition: 0.3s;
+  }
+   
+  .register-form input:focus {
+    outline: none;
+    border-color: #66a6ff;
+    background: #fff;
+  }
+   
+  .register-form button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #4CAF50;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+   
+  .register-form button:hover {
+    background: #43a047;
+  }
+   
+  .error {
+    color: #e74c3c;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+   
+  .success {
+    color: #27ae60;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+   
+  .login-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+   
+  .login-link a {
+    color: #2980b9;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+   
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(25px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  </style>
+   
+   
