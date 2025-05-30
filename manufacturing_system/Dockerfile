@@ -1,11 +1,11 @@
-# 使用 OpenJDK 21 作為基礎映像
-FROM openjdk:21-jdk-slim
-
-# 設定工作目錄
+# 第一階段：使用 Maven 建置 JAR
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# 複製 Spring Boot 的 JAR 檔案（已經包含 Vue 靜態檔）
-COPY target/manufacturing_system-0.0.1-SNAPSHOT.jar app.jar
-
-# 啟動應用程式
+# 第二階段：使用 OpenJDK 執行 JAR
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/manufacturing_system-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
