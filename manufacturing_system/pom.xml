@@ -4,16 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>monitor</artifactId>
+    <artifactId>manufacturing_system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>System Monitor</name>
-    <description>Spring Boot system monitor project</description>
+    <name>manufacturing_system</name>
+    <description>Spring Boot manufacturing_system project</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version> <!-- 使用Spring Boot的版本 -->
+        <version>3.4.6</version> <!-- 使用Spring Boot的版本 -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -37,12 +37,22 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
         </dependency>
-
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    
+</dependency>
+ 
         <!-- Lombok -->
      <dependency>
     <groupId>org.projectlombok</groupId>
     <artifactId>lombok</artifactId>
     <scope>provided</scope>
+</dependency>
+<dependency>
+  <groupId>com.h2database</groupId>
+  <artifactId>h2</artifactId>
+  <scope>runtime</scope>
 </dependency>
     </dependencies>
 
