@@ -5,7 +5,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
  
 # 複製 Spring Boot 的 JAR 檔案（已經包含 Vue 靜態檔）
-COPY target/*.manufacturing_system-0.0.1-SNAPSHOT app.jar
+COPY target/manufacturing_system-0.0.1-SNAPSHOT app.jar
  
 # 開啟應用
 ENTRYPOINT ["java", "-jar", "app.jar"]
