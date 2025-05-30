@@ -1,13 +1,13 @@
 # Step 1: Build frontend
 FROM node:20 AS frontend
 WORKDIR /frontend
-COPY project/ .      # 假設你的 Vue 專案在 project 資料夾
+COPY project/ .
 RUN npm install && npm run build
 
 # Step 2: Build backend
 FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
-COPY . .
+COPY manufacturing_system/ .
 COPY --from=frontend /frontend/dist ./src/main/resources/static
 RUN mvn clean package -DskipTests
 
