@@ -94,7 +94,7 @@ export default {
   methods: {
     async fetchOrders(userId) {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders/user/${userId}`);
+        const response = await axios.get(`https://manufacturing-system-springboot.onrender.com/api/orders/user/${userId}`);
         this.orders = response.data;
       } catch (error) {
         alert("取得訂單資料失敗，請稍後再試。");
@@ -115,13 +115,13 @@ export default {
         this.newOrder.totalAmount = this.newOrder.quantity * this.newOrder.price;
  
         if (this.isEditing) {
-          await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/orders/update/${this.currentOrderId}`, this.newOrder);
+          await axios.put(`https://manufacturing-system-springboot.onrender.com/api/orders/update/${this.currentOrderId}`, this.newOrder);
           const index = this.orders.findIndex(order => order.id === this.currentOrderId);
           this.orders[index] = { ...this.newOrder, id: this.currentOrderId };
           this.isEditing = false;
           this.currentOrderId = null;
         } else {
-          const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/orders/create`, this.newOrder);
+          const response = await axios.post("https://manufacturing-system-springboot.onrender.com/api/orders/create", this.newOrder);
           this.orders.push(response.data);
         }
  
@@ -136,7 +136,7 @@ export default {
       if (!confirmed) return;
  
       try {
-        await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/orders/delete/${orderId}`);
+        await axios.delete(`https://manufacturing-system-springboot.onrender.com/api/orders/delete/${orderId}`);
         this.orders = this.orders.filter(order => order.id !== orderId);
         alert("訂單刪除成功！");
       } catch (error) {
