@@ -3,7 +3,7 @@ module.exports = {
     port: 8082,
     proxy: {
       '/api': {
-        target: `${import.meta.env.VITE_API_BASE_URL}`,
+        target: "http://localhost:8080",
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
