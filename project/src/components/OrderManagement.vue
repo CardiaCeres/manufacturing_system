@@ -94,7 +94,7 @@ export default {
   methods: {
     async fetchOrders(userId) {
       try {
-        const response = await axios.get(`http://localhost:8080/api/orders/user/${userId}`);
+        const response = await axios.get(`https://manufacturing-system-springboot.onrender.com/api/orders/user/${userId}`);
         this.orders = response.data;
       } catch (error) {
         alert("取得訂單資料失敗，請稍後再試。");
@@ -121,7 +121,7 @@ export default {
           this.isEditing = false;
           this.currentOrderId = null;
         } else {
-          const response = await axios.post("http://localhost:8080/api/orders/create", this.newOrder);
+          const response = await axios.post("https://manufacturing-system-springboot.onrender.com/api/orders/create", this.newOrder);
           this.orders.push(response.data);
         }
  
@@ -136,7 +136,7 @@ export default {
       if (!confirmed) return;
  
       try {
-        await axios.delete(`http://localhost:8080/api/orders/delete/${orderId}`);
+        await axios.delete(`https://manufacturing-system-springboot.onrender.com/api/orders/delete/${orderId}`);
         this.orders = this.orders.filter(order => order.id !== orderId);
         alert("訂單刪除成功！");
       } catch (error) {
