@@ -36,7 +36,7 @@
       async register() {
         this.loading = true;
         try {
-          await axios.post("http://localhost:8080/api/register", {
+          await axios.post("https://manufacturing-system-springboot.onrender.com/api/register", {
             username: this.username,
             password: this.password,
             email: this.email
