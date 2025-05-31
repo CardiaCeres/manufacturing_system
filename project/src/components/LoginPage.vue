@@ -33,7 +33,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post("http://localhost:8080/api/login", {
+        const response = await axios.post("https://manufacturing-system-springboot.onrender.com/api/login", {
           username: this.username,
           password: this.password
         });
