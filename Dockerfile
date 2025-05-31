@@ -15,5 +15,11 @@ RUN mvn clean package -DskipTests
 FROM openjdk:21-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/manufacturing_system-0.0.1-SNAPSHOT.jar app.jar
+
+# 替 Render / Docker Cloud 環境準備的環境變數（可被覆蓋）
+ENV DB_URL=""
+ENV DB_USER=""
+ENV DB_PASS=""
+
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
