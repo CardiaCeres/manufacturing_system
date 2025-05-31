@@ -36,7 +36,7 @@
       async register() {
         this.loading = true;
         try {
-          await axios.post("https://manufacturing-system-springboot.onrender.com/api/register", {
+          await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/register`, {
             username: this.username,
             password: this.password,
             email: this.email
