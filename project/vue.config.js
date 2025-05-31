@@ -3,7 +3,7 @@ module.exports = {
     port: 8082,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'https://manufacturing-system-springboot.onrender.com',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
