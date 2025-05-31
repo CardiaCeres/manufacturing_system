@@ -121,7 +121,7 @@ export default {
           this.isEditing = false;
           this.currentOrderId = null;
         } else {
-          const response = await axios.post("${this.$apiBaseUrl}/api/orders/create", this.newOrder);
+          const response = await axios.post(`${this.$apiBaseUrl}/api/orders/create`, this.newOrder);
           this.orders.push(response.data);
         }
  
