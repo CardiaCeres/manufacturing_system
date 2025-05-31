@@ -115,7 +115,7 @@ export default {
         this.newOrder.totalAmount = this.newOrder.quantity * this.newOrder.price;
  
         if (this.isEditing) {
-          await axios.put(`http://localhost:8080/api/orders/update/${this.currentOrderId}`, this.newOrder);
+          await axios.put(`https://manufacturing-system-springboot.onrender.com/api/orders/update/${this.currentOrderId}`, this.newOrder);
           const index = this.orders.findIndex(order => order.id === this.currentOrderId);
           this.orders[index] = { ...this.newOrder, id: this.currentOrderId };
           this.isEditing = false;
