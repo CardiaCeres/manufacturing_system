@@ -12,7 +12,7 @@ import com.manufacturing.model.User;
 import com.manufacturing.service.UserService;
  
 @RestController
-@CrossOrigin(origins = "https://manufacturing-system-springboot.onrender.com")
+@CrossOrigin(origins = "frontendUrl")
 @RequestMapping("/api")
 public class UserController {
  
