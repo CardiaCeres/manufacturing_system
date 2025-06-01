@@ -18,7 +18,7 @@ import com.manufacturing.model.Order;
 import com.manufacturing.service.OrderService;
  
 @RestController
-@CrossOrigin(origins = "https://manufacturing-system-springboot.onrender.com")
+@CrossOrigin(origins = "frontendUrl")
 @RequestMapping("/api/orders")
 public class OrderController {
  
