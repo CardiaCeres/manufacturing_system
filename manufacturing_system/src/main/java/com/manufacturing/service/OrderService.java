@@ -19,9 +19,8 @@ public class OrderService {
         return orderRepository.findByUserIdOrderByOrderNumberAsc(userId);
     }
 
-      public List<Order> createOrder(Order order) {
-        orderRepository.save(order);
-        return findByUserIdOrderByOrderNumberAsc(order.getUserId());
+    public Order createOrder(Order order) {
+        return orderRepository.save(order);
     }
 
     public void deleteOrder(Long id) {
