@@ -36,7 +36,7 @@ public class OrderController {
     }
  
     @PostMapping("/create")
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+    public ResponseEntity<List<Order>> createOrder(@RequestBody Order order) {
         try {
             // 驗證必要欄位
             if (order.getUserId() == null || order.getProductName() == null || order.getProductName().isEmpty()) {
@@ -53,9 +53,9 @@ public class OrderController {
                 order.setStatus("處理中");
             }
  
-            Order createdOrder = orderService.createOrder(order);
-            return ResponseEntity.ok(createdOrder);
-        } catch (Exception e) {
+            List<Order> orders = orderService.createOrder(order);
+            return ResponseEntity.ok(orders);
+          } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
