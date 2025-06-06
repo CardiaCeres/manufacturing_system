@@ -71,12 +71,12 @@ public class OrderController {
     }
     
       @PutMapping("/update/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
-        try {
-            Order updatedOrder = orderService.updateOrder(id, order);
-            return ResponseEntity.ok(updatedOrder);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+public ResponseEntity<List<Order>> updateOrder(@PathVariable Long id, @RequestBody Order order) {
+    try {
+        List<Order> updatedOrders = orderService.updateOrder(id, order);
+        return ResponseEntity.ok(updatedOrders);
+    } catch (Exception e) {
+        return ResponseEntity.internalServerError().build();
         }
     }
 }
