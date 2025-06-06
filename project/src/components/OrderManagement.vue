@@ -115,9 +115,8 @@ export default {
         this.newOrder.totalAmount = this.newOrder.quantity * this.newOrder.price;
  
         if (this.isEditing) {
-          await axios.put(`${this.$apiBaseUrl}/api/orders/update/${this.currentOrderId}`, this.newOrder);
-          const index = this.orders.findIndex(order => order.id === this.currentOrderId);
-          this.orders[index] = { ...this.newOrder, id: this.currentOrderId };
+         const response = await axios.put(`${this.$apiBaseUrl}/api/orders/update/${this.currentOrderId}`, this.newOrder);
+          this.orders = response.data;
           this.isEditing = false;
           this.currentOrderId = null;
         } else {
