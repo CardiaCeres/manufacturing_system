@@ -23,8 +23,9 @@ jobs:
     # ✅ 複製 dist 到 Spring Boot 靜態資料夾中
     - name: Copy frontend dist to Spring Boot static
       run: |
-        rm -rf ./manufacturing_system/src/main/resources/static/*
-        cp -r ./project/dist/* ./manufacturing_system/src/main/resources/static/
+       mkdir -p ./manufacturing_system/src/main/resources/static
+       rm -rf ./manufacturing_system/src/main/resources/static/*
+       cp -r ./project/dist/* ./manufacturing_system/src/main/resources/static/
 
     # ✅ 建立 Docker 映像（假設 Dockerfile 在專案根目錄）
     - name: Build Docker image
