@@ -14,15 +14,15 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install dependencies & build Vue
-      working-directory: ./frontend
+      working-directory: ./manufacturing_system
       run: |
         npm install
         npm run build
 
     - name: Copy frontend dist to Spring Boot static
       run: |
-        rm -rf ./backend/src/main/resources/static/*
-        cp -r ./frontend/dist/* ./backend/src/main/resources/static/
+        rm -rf ./project/src/main/resources/static/*
+        cp -r ./manufacturing_system/dist/* ./project/src/main/resources/static/
 
     - name: Build Docker image
       run: |
