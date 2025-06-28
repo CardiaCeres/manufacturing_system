@@ -13,25 +13,25 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # ✅ 建置 Vue 前端
-    - name: Install & Build Vue
-      working-directory: ./manufacturing_system
+    # ✅ 建置 Vue（在 project 資料夾中）
+    - name: Install dependencies & build Vue
+      working-directory: ./project
       run: |
         npm install
         npm run build
 
-    # ✅ 複製 Vue dist 到 Spring Boot static 資料夾
-    - name: Copy dist to Spring Boot static
+    # ✅ 複製 dist 到 Spring Boot 靜態資料夾中
+    - name: Copy frontend dist to Spring Boot static
       run: |
-        rm -rf ./project/src/main/resources/static/*
-        cp -r ./manufacturing_system/dist/* ./project/src/main/resources/static/
+        rm -rf ./manufacturing_system/src/main/resources/static/*
+        cp -r ./project/dist/* ./manufacturing_system/src/main/resources/static/
 
-    # ✅ 建立 Docker 映像（根目錄有 Dockerfile）
+    # ✅ 建立 Docker 映像（假設 Dockerfile 在專案根目錄）
     - name: Build Docker image
       run: |
         docker build -t fullstack-app .
 
-    # ✅ 通知 Render 部署
+    # ✅ 觸發 Render 自動部署（Deploy Hook）
     - name: Trigger Render Deploy Hook
       run: |
         curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
