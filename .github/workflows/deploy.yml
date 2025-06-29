@@ -31,7 +31,8 @@ jobs:
     - name: Build Spring Boot backend
   working-directory: ./manufacturing_system
   run: |
-    mvn clean package -DskipTests
+    chmod +x ./mvnw
+    ./mvnw clean package -DskipTests
 
     # ✅ 建立 Docker 映像（假設 Dockerfile 在專案根目錄）
     - name: Build Docker image
