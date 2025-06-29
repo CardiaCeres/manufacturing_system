@@ -19,29 +19,27 @@ jobs:
           distribution: 'temurin'
           java-version: 21
 
-      # 建置 Vue
       - name: Install dependencies & build Vue
         working-directory: ./project
         run: |
           npm install
           npm run build
 
-      # 複製前端檔案
       - name: Copy frontend dist to Spring Boot static
         run: |
           mkdir -p ./manufacturing_system/src/main/resources/static
           rm -rf ./manufacturing_system/src/main/resources/static/*
           cp -r ./project/dist/* ./manufacturing_system/src/main/resources/static/
 
-      # Build Spring Boot 專案
       - name: Build Spring Boot backend
         working-directory: ./manufacturing_system
         run: mvn clean package -DskipTests
 
-      # 建立 Docker image
+      - name: Check jar file
+        run: ls -l manufacturing_system/target/*.jar
+
       - name: Build Docker image
         run: docker build -t fullstack-app .
 
-      # 觸發 Render 部署
       - name: Trigger Render Deploy Hook
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
