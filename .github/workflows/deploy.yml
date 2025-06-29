@@ -1,4 +1,4 @@
-name: Build and Deploy to Render with Deploy Hook
+name: Build and Deploy to Render (with Deploy Hook)
 
 on:
   push:
@@ -13,24 +13,30 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # -------------------------
+    # 前端建置
+    # -------------------------
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 18
 
-    - name: Build frontend (Vue.js)
+    - name: Build frontend (Vue)
       working-directory: ./project
       run: |
         npm install
         npm run build
 
-    - name: Copy frontend build to backend static resources
+    - name: Copy frontend to backend static
       run: |
         mkdir -p manufacturing_system/src/main/resources/static
         rm -rf manufacturing_system/src/main/resources/static/*
         cp -r project/dist/* manufacturing_system/src/main/resources/static/
 
-    - name: Setup Maven
+    # -------------------------
+    # 後端建置
+    # -------------------------
+    - name: Setup Java
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
@@ -40,16 +46,20 @@ jobs:
       working-directory: ./manufacturing_system
       run: mvn clean package -DskipTests
 
-    - name: Move jar to project root for Docker build
+    - name: Rename JAR and move to root
       run: |
-         cp manufacturing_system/target/*.jar app.jar
+        cp manufacturing_system/target/*.jar app.jar
+        ls -al
 
-    - name: List files to verify jar exists
-      run: ls -al
-
+    # -------------------------
+    # Docker build
+    # -------------------------
     - name: Build Docker image
       run: docker build -t fullstack-app .
 
+    # -------------------------
+    # Render 部署
+    # -------------------------
     - name: Trigger Render Deploy Hook
       env:
         RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
