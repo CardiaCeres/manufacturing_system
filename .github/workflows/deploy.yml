@@ -1,4 +1,4 @@
-name: Build and Deploy to Render (with Deploy Hook)
+name: Build and Deploy Fullstack App to Render
 
 on:
   push:
@@ -10,57 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    # -------------------------
-    # 前端建置
-    # -------------------------
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
 
-    - name: Build frontend (Vue)
-      working-directory: ./project
-      run: |
-        npm install
-        npm run build
-
-    - name: Copy frontend to backend static
-      run: |
-        mkdir -p manufacturing_system/src/main/resources/static
-        rm -rf manufacturing_system/src/main/resources/static/*
-        cp -r project/dist/* manufacturing_system/src/main/resources/static/
-
-    # -------------------------
-    # 後端建置
-    # -------------------------
-    - name: Setup Java
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: 21
-
-    - name: Build backend (Spring Boot)
-      working-directory: ./manufacturing_system
-      run: mvn clean package -DskipTests
-
-    - name: Rename JAR and move to root
-      run: |
-        cp manufacturing_system/target/*.jar app.jar
-        ls -al
-
-    # -------------------------
-    # Docker build
-    # -------------------------
+    # ✅ 建立 Docker 映像（假設 Dockerfile 在專案根目錄）
     - name: Build Docker image
-      run: docker build -t fullstack-app .
+      run: |
+        docker build -t fullstack-app .
 
-    # -------------------------
-    # Render 部署
-    # -------------------------
+    # ✅ 觸發 Render 自動部署（Deploy Hook）
     - name: Trigger Render Deploy Hook
-      env:
-        RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-      run: curl -X POST "$RENDER_DEPLOY_HOOK_URL"
+      run: |
+        curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
