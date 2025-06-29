@@ -40,15 +40,12 @@ jobs:
       working-directory: ./manufacturing_system
       run: mvn clean package -DskipTests
 
+    - name: Rename JAR file to fixed name
+      run: |
+        mv manufacturing_system/target/*.jar manufacturing_system/target/app.jar
+
     - name: Build Docker image
       run: docker build -t fullstack-app .
-
-    - name: Save Docker image as artifact (optional)
-      uses: actions/upload-artifact@v4
-      with:
-        name: fullstack-app-image
-        path: |
-          fullstack-app.tar
 
     - name: Trigger Render Deploy Hook
       env:
