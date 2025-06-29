@@ -5,7 +5,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # 複製 Spring Boot JAR（注意請根據實際 JAR 名稱調整）
-COPY manufacturing_system/target/*.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 # 開放應用埠
 EXPOSE 8080
