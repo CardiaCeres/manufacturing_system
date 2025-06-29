@@ -13,32 +13,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ✅ 建置 Vue（在 project 資料夾中）
+      - name: Setup Java 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      # 建置 Vue
       - name: Install dependencies & build Vue
         working-directory: ./project
         run: |
           npm install
           npm run build
 
-      # ✅ 複製 dist 到 Spring Boot 靜態資料夾中
+      # 複製前端檔案
       - name: Copy frontend dist to Spring Boot static
         run: |
           mkdir -p ./manufacturing_system/src/main/resources/static
           rm -rf ./manufacturing_system/src/main/resources/static/*
           cp -r ./project/dist/* ./manufacturing_system/src/main/resources/static/
 
-      # ✅ 使用 Maven 打包 Spring Boot 專案
+      # Build Spring Boot 專案
       - name: Build Spring Boot backend
         working-directory: ./manufacturing_system
-        run: |
-          mvn clean package -DskipTests
+        run: mvn clean package -DskipTests
 
-      # ✅ 建立 Docker 映像（假設 Dockerfile 在專案根目錄）
+      # 建立 Docker image
       - name: Build Docker image
-        run: |
-          docker build -t fullstack-app .
+        run: docker build -t fullstack-app .
 
-      # ✅ 觸發 Render 自動部署（Deploy Hook）
+      # 觸發 Render 部署
       - name: Trigger Render Deploy Hook
-        run: |
-          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
