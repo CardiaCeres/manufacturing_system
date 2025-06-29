@@ -1,13 +1,10 @@
-# 使用輕量JDK映像
+# 輕量 JRE 映像
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# 複製打包好的 Spring Boot jar
+# 只複製已打包的 Spring Boot jar（裡面包含前端靜態資源）
 COPY manufacturing_system/target/*.jar app.jar
-
-# 複製前端已編譯好的靜態檔案
-COPY manufacturing_system/src/main/resources/static ./static
 
 EXPOSE 8080
 
