@@ -40,9 +40,12 @@ jobs:
       working-directory: ./manufacturing_system
       run: mvn clean package -DskipTests
 
-    - name: Rename JAR file to fixed name
+    - name: Move jar to project root for Docker build
       run: |
-        mv manufacturing_system/target/*.jar manufacturing_system/target/app.jar
+         cp manufacturing_system/target/*.jar app.jar
+
+    - name: List files to verify jar exists
+      run: ls -al
 
     - name: Build Docker image
       run: docker build -t fullstack-app .
