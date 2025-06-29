@@ -43,7 +43,7 @@ jobs:
       run: docker build -t fullstack-app .
 
     - name: Save Docker image as artifact (optional)
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: fullstack-app-image
         path: |
