@@ -39,6 +39,7 @@ jobs:
         run: ls -l manufacturing_system/target/
 
       - name: Build Docker image
+        working-directory: ./manufacturing_system
         run: docker build -t fullstack-app .
 
       - name: Trigger Render Deploy Hook
