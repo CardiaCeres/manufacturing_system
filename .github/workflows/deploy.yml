@@ -26,6 +26,7 @@ jobs:
 
     - name: Copy frontend build to backend static resources
       run: |
+        mkdir -p manufacturing_system/src/main/resources/static
         rm -rf manufacturing_system/src/main/resources/static/*
         cp -r project/dist/* manufacturing_system/src/main/resources/static/
 
