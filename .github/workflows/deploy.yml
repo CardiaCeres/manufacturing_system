@@ -28,11 +28,9 @@ jobs:
        cp -r ./project/dist/* ./manufacturing_system/src/main/resources/static/
 
     # ✅ 使用 Maven 打包 Spring Boot 專案
-    - name: Build Spring Boot backend
-  working-directory: ./manufacturing_system
-  run: |
-    chmod +x ./mvnw
-    ./mvnw clean package -DskipTests
+     - name: Build Spring Boot backend
+    working-directory: ./manufacturing_system
+    run: mvn clean package -DskipTests
 
     # ✅ 建立 Docker 映像（假設 Dockerfile 在專案根目錄）
     - name: Build Docker image
