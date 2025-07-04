@@ -15,15 +15,15 @@ jobs:
 
       # ✅ 登入 GitHub Container Registry (GHCR)
       - name: Log in to GHCR
-        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u $LOWER_USERNAME --password-stdin
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u CardiaCeres --password-stdin
 
       # ✅ 建立 Docker 映像
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/manufacturing_system:latest .
+        run: docker build -t ghcr.io/CardiaCeres/manufacturing_system:latest .
 
       # ✅ 推送映像到 GHCR
       - name: Push Docker image to GHCR
-        run: docker push ghcr.io/${{ github.repository_owner }}/manufacturing_system:latest
+        run: docker push ghcr.io/CardiaCeres/manufacturing_system:latest
 
       # ✅ 觸發 Render 自動部署
       - name: Trigger Render Deploy Hook
