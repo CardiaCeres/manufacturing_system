@@ -1,4 +1,4 @@
-name: Build and Deploy Fullstack App to Render
+name: Build and Deploy manufacturing_system to Render
 
 on:
   push:
@@ -10,20 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Log in to GitHub Container Registry (GHCR)
-      run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      # ✅ 登入 GitHub Container Registry (GHCR)
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    - name: Build Docker image
-      run: |
-        docker build -t ghcr.io/${{ github.repository_owner }}/fullstack-app:latest .
+      # ✅ 建立 Docker 映像
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/manufacturing_system:latest .
 
-    - name: Push Docker image to GHCR
-      run: |
-        docker push ghcr.io/${{ github.repository_owner }}/fullstack-app:latest
+      # ✅ 推送映像到 GHCR
+      - name: Push Docker image to GHCR
+        run: docker push ghcr.io/${{ github.repository_owner }}/manufacturing_system:latest
 
-    - name: Trigger Render Deploy Hook
-      run: |
-        curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }} }}
+      # ✅ 觸發 Render 自動部署
+      - name: Trigger Render Deploy Hook
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
