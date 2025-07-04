@@ -15,7 +15,7 @@ jobs:
 
       # ✅ 登入 GitHub Container Registry (GHCR)
       - name: Log in to GHCR
-        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u $LOWER_USERNAME --password-stdin
 
       # ✅ 建立 Docker 映像
       - name: Build Docker image
