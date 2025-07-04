@@ -13,13 +13,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Log in to GitHub Container Registry (GHCR)
+      run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    # ✅ 建立 Docker 映像（假設 Dockerfile 在專案根目錄）
     - name: Build Docker image
       run: |
-        docker build -t fullstack-app .
+        docker build -t ghcr.io/${{ github.repository_owner }}/fullstack-app:latest .
 
-    # ✅ 觸發 Render 自動部署（Deploy Hook）
+    - name: Push Docker image to GHCR
+      run: |
+        docker push ghcr.io/${{ github.repository_owner }}/fullstack-app:latest
+
     - name: Trigger Render Deploy Hook
       run: |
-        curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }} }}
