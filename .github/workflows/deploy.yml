@@ -1,7 +1,7 @@
 name: Build and Deploy manufacturing_system to Render
 
 on:
-  push:
+  push: 
     branches:
       - main
   schedule:
