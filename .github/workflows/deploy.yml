@@ -36,6 +36,6 @@ jobs:
       runs-on: ubuntu-latest
       if: github.event_name == 'schedule'  # ✅ 只有排程時才喚醒 Render
 
-    steps:
-      - name: Ping Render to prevent cold start
-        run: curl -s https://manufacturing-system-latest.onrender.com
+      steps:
+        - name: Ping Render to prevent cold start
+          run: curl -s https://manufacturing-system-latest.onrender.com
