@@ -4,10 +4,13 @@ on:
   push:
     branches:
       - main
+  schedule:
+      - cron: '*/30 * * * *'  # ✅ 每 30 分鐘（UTC 時區）
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'  # ✅ 只有 push 時才部署
 
     steps:
       - name: Checkout repository
@@ -28,3 +31,11 @@ jobs:
       # ✅ 觸發 Render 自動部署
       - name: Trigger Render Deploy Hook
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+
+keep-warm:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'  # ✅ 只有排程時才喚醒 Render
+
+    steps:
+      - name: Ping Render to prevent cold start
+        run: curl -s https://manufacturing-system-latest.onrender.com
