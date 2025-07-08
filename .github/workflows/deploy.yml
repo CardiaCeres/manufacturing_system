@@ -1,41 +1,44 @@
 name: Build and Deploy manufacturing_system to Render
 
 on:
-  push: 
+  push:
     branches:
       - main
   schedule:
-      - cron: '*/5 * * * *'  # ✅ 每 30 分鐘（UTC 時區）
+    - cron: '*/5 * * * *'  # ✅ 每 5 分鐘（UTC 時區）
+  workflow_dispatch:        # ✅ 手動觸發方便測試
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'  # ✅ 只有 push 時才部署
+    if: github.event_name == 'push'  # ✅ 僅當 push 時才部署
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ✅ 登入 GitHub Container Registry (GHCR)
       - name: Log in to GHCR
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u cardiaceres --password-stdin
 
-      # ✅ 建立 Docker 映像
       - name: Build Docker image
         run: docker build -t ghcr.io/cardiaceres/manufacturing_system:latest .
 
-      # ✅ 推送映像到 GHCR
       - name: Push Docker image to GHCR
         run: docker push ghcr.io/cardiaceres/manufacturing_system:latest
 
-      # ✅ 觸發 Render 自動部署
       - name: Trigger Render Deploy Hook
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
 
   keep-warm:
-      runs-on: ubuntu-latest
-      if: github.event_name == 'schedule'  # ✅ 只有排程時才喚醒 Render
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'  # ✅ 只有排程時才執行
 
-      steps:
-        - name: Ping Render to prevent cold start
-          run: curl -s https://manufacturing-system-latest.onrender.com
+    steps:
+      - name: Print current time
+        run: date
+
+      - name: Ping Render to prevent cold start
+        run: |
+          echo "🔄 Pinging Render app..."
+          curl -s -o /dev/null -w "%{http_code}" https://manufacturing-system-latest.onrender.com
+          echo "✅ Ping sent to Render"
