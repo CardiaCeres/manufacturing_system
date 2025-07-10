@@ -1,0 +1,17 @@
+name: Keep Render Warm
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # 每 5 分鐘一次（UTC）
+  workflow_dispatch:       # 可手動執行
+
+jobs:
+  ping-render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Simulate user traffic to Render
+        run: |
+          curl -s -o /dev/null -w "Status: %{http_code}\n" \
+          -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" \
+           https://manufacturing-system-latest.onrender.com
