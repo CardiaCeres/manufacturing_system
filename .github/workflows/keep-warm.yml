@@ -1,4 +1,4 @@
-name: Keep Render Warm
+name: Keep Render Warm (08:00–18:00 TWT)
 
 on:
   schedule:
