@@ -2,8 +2,9 @@ name: Keep Render Warm
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # 每 30 分鐘一次（UTC）
-  workflow_dispatch:       # 可手動執行
+    - cron: '0 0-10 * * *'   # 每小時整點（UTC 00:00~10:00）
+    - cron: '30 0-9 * * *'   # 每小時半點（UTC 00:30~09:30）
+  workflow_dispatch:         # 可手動執行
 
 jobs:
   ping-render:
