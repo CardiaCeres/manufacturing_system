@@ -12,9 +12,7 @@
             placeholder="🔒 密碼"
             required
           />
-          <span class="toggle-eye" @click="togglePassword">
-            {{ showPassword ? '🙈' : '👁️' }}
-          </span>
+          <span class="toggle-eye" @click="togglePassword">👁️</span>
         </div>
 
         <input v-model="email" type="email" placeholder="📧 電子信箱" required />
@@ -23,7 +21,6 @@
         <p v-if="error" class="error">{{ error }}</p>
         <p v-if="success" class="success">{{ success }}</p>
       </form>
-
       <p class="login-link">
         已有帳號？<a @click="goToLogin">立即登入</a>
       </p>
@@ -44,7 +41,7 @@ export default {
       error: "",
       success: "",
       loading: false,
-      showPassword: false, // 👁️ 控制密碼顯示
+      showPassword: false
     };
   },
   methods: {
@@ -130,6 +127,28 @@ export default {
   background: #fff;
 }
 
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 40px;
+  box-sizing: border-box;
+}
+
+.toggle-eye {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+  user-select: none;
+}
+
 .register-form button {
   width: 100%;
   margin-top: 20px;
@@ -146,25 +165,6 @@ export default {
 
 .register-form button:hover {
   background: #43a047;
-}
-
-.password-field {
-  position: relative;
-}
-
-.password-field input {
-  width: 100%;
-  padding-right: 40px;
-}
-
-.toggle-eye {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 18px;
-  user-select: none;
 }
 
 .error {
