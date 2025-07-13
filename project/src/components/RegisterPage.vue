@@ -112,6 +112,7 @@ export default {
 .register-form input {
   display: block;
   width: 93%;
+  box-sizing: border-box;
   margin: 12px 0;
   padding: 12px;
   border: 1px solid #ddd;
