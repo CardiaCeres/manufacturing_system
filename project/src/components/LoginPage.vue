@@ -4,8 +4,21 @@
       <h2>🔐 智慧訂單管理系統</h2>
       <form @submit.prevent="login" class="login-form">
         <input v-model="username" placeholder="使用者名稱" required />
-        <input v-model="password" type="password" placeholder="密碼" required />
+
+        <div class="password-field">
+          <input
+            :type="showPassword ? 'text' : 'password'"
+            v-model="password"
+            placeholder="密碼"
+            required
+          />
+          <span class="toggle-eye" @click="togglePassword">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </span>
+        </div>
+
         <button type="submit">登入</button>
+
         <transition name="fade">
           <p v-if="error" class="error">{{ error }}</p>
         </transition>
@@ -17,20 +30,24 @@
     </div>
   </div>
 </template>
- 
+
 <script>
 import axios from "axios";
- 
+
 export default {
   name: "LoginPage",
   data() {
     return {
       username: "",
       password: "",
-      error: ""
+      error: "",
+      showPassword: false // 👁️ 控制密碼顯示
     };
   },
   methods: {
+    togglePassword() {
+      this.showPassword = !this.showPassword;
+    },
     async login() {
       try {
         const response = await axios.post(`${this.$apiBaseUrl}/api/login`, {
@@ -49,7 +66,7 @@ export default {
   }
 };
 </script>
- 
+
 <style scoped>
 /* 背景與佈局 */
 .login-wrapper {
@@ -61,7 +78,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
- 
+
 .login-box {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);
@@ -73,14 +90,14 @@ export default {
   text-align: center;
   animation: fadeIn 0.6s ease-out;
 }
- 
+
 .login-box h2 {
   font-size: 26px;
   margin-bottom: 25px;
   color: #333;
   font-weight: bold;
 }
- 
+
 /* 表單樣式 */
 .login-form input {
   display: block;
@@ -98,7 +115,25 @@ export default {
   outline: none;
   box-shadow: 0 0 4px rgba(102, 126, 234, 0.4);
 }
- 
+
+/* 密碼小眼睛 */
+.password-field {
+  position: relative;
+}
+.password-field input {
+  width: 100%;
+  padding-right: 40px;
+}
+.toggle-eye {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}
+
 .login-form button {
   width: 100%;
   padding: 14px;
@@ -115,7 +150,7 @@ export default {
 .login-form button:hover {
   background-color: #5a67d8;
 }
- 
+
 /* 錯誤提示 */
 .error {
   color: #e74c3c;
@@ -123,7 +158,7 @@ export default {
   font-size: 14px;
   animation: shake 0.3s;
 }
- 
+
 /* 註冊連結 */
 .register-link {
   margin-top: 20px;
@@ -139,7 +174,7 @@ export default {
 .register-link a:hover {
   color: #5a67d8;
 }
- 
+
 /* 動畫 */
 @keyframes shake {
   0% { transform: translateX(0); }
@@ -148,14 +183,14 @@ export default {
   75% { transform: translateX(-5px); }
   100% { transform: translateX(0); }
 }
- 
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.3s ease;
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
 }
- 
+
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
