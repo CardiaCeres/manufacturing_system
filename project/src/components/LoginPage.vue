@@ -102,6 +102,7 @@ export default {
 .login-form input {
   display: block;
   width: 93%;
+  box-sizing: border-box;
   padding: 14px;
   margin: 12px 0;
   border: 1px solid #ccc;
