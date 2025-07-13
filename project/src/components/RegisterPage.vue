@@ -41,7 +41,7 @@ export default {
       error: "",
       success: "",
       loading: false,
-      showPassword: false
+      showPassword: false // 控制密碼顯示
     };
   },
   methods: {
@@ -111,7 +111,7 @@ export default {
 
 .register-form input {
   display: block;
-  width: 93%;
+  width: 100%;
   margin: 12px 0;
   padding: 12px;
   border: 1px solid #ddd;
@@ -129,23 +129,18 @@ export default {
 
 .password-field {
   position: relative;
-  width: 100%;
 }
-
 .password-field input {
   width: 100%;
   padding-right: 40px;
-  box-sizing: border-box;
 }
-
 .toggle-eye {
   position: absolute;
   top: 50%;
-  right: 14px;
+  right: 12px;
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 18px;
-  color: #888;
   user-select: none;
 }
 
