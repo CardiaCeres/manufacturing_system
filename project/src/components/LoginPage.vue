@@ -101,7 +101,7 @@ export default {
 /* 表單樣式 */
 .login-form input {
   display: block;
-  width: 93%;
+  width: 100%;
   box-sizing: border-box;
   padding: 14px;
   margin: 12px 0;
@@ -122,7 +122,6 @@ export default {
   position: relative;
 }
 .password-field input {
-  width: 93%;
   padding-right: 40px;
 }
 .toggle-eye {
