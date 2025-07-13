@@ -12,7 +12,9 @@
             placeholder="密碼"
             required
           />
-          <span class="toggle-eye" @click="togglePassword">👁️</span>
+          <span class="toggle-eye" @click="togglePassword">
+            👁️
+          </span>
         </div>
 
         <button type="submit">登入</button>
@@ -21,9 +23,9 @@
           <p v-if="error" class="error">{{ error }}</p>
         </transition>
       </form>
-
       <p class="register-link">
-        還沒有帳號？<a @click="goToRegister">立即註冊</a>
+        還沒有帳號？
+        <a @click="goToRegister">立即註冊</a>
       </p>
     </div>
   </div>
@@ -39,7 +41,7 @@ export default {
       username: "",
       password: "",
       error: "",
-      showPassword: false
+      showPassword: false // 控制是否顯示密碼
     };
   },
   methods: {
@@ -99,7 +101,7 @@ export default {
 /* 表單樣式 */
 .login-form input {
   display: block;
-  width: 93%;
+  width: 100%;
   padding: 14px;
   margin: 12px 0;
   border: 1px solid #ccc;
@@ -108,32 +110,27 @@ export default {
   background-color: #fdfdfd;
   transition: 0.3s;
 }
-
 .login-form input:focus {
   border-color: #667eea;
   outline: none;
   box-shadow: 0 0 4px rgba(102, 126, 234, 0.4);
 }
 
+/* 密碼欄位與小眼睛 */
 .password-field {
   position: relative;
-  width: 100%;
 }
-
 .password-field input {
   width: 100%;
   padding-right: 40px;
-  box-sizing: border-box;
 }
-
 .toggle-eye {
   position: absolute;
   top: 50%;
-  right: 14px;
+  right: 12px;
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 18px;
-  color: #888;
   user-select: none;
 }
 
@@ -151,7 +148,6 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
 .login-form button:hover {
   background-color: #5a67d8;
 }
@@ -170,14 +166,12 @@ export default {
   font-size: 14px;
   color: #555;
 }
-
 .register-link a {
   color: #667eea;
   cursor: pointer;
   font-weight: bold;
   text-decoration: underline;
 }
-
 .register-link a:hover {
   color: #5a67d8;
 }
@@ -198,11 +192,6 @@ export default {
   opacity: 0;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
-}
-</style>
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
