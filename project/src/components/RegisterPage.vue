@@ -111,7 +111,7 @@ export default {
 
 .register-form input {
   display: block;
-  width: 93%;
+  width: 100%;
   box-sizing: border-box;
   margin: 12px 0;
   padding: 12px;
@@ -132,7 +132,6 @@ export default {
   position: relative;
 }
 .password-field input {
-  width: 93%;
   padding-right: 40px;
 }
 .toggle-eye {
