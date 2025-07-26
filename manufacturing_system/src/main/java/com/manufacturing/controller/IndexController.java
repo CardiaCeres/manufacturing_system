@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
  
     @RequestMapping(value = {
-        "/", "/login","/register","/orders"
+        "/", "/login","/register"
     })
     public String forward() {
         return "forward:/index.html";
