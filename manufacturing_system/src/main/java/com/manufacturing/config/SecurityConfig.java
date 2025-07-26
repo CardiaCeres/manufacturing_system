@@ -38,7 +38,9 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // 啟用 cors 並指定配置來源
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/index.html", "/static/**", "/api/login", "/api/register").permitAll()
+                .requestMatchers("/", "/index.html", "/favicon.ico",
+                "/assets/**", "/static/**",
+                "/api/login", "/api/register").permitAll()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex
