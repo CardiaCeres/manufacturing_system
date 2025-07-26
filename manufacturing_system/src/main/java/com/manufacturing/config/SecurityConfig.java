@@ -26,6 +26,9 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -35,7 +38,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // 啟用 cors 並指定配置來源
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/login", "/api/register").permitAll()
@@ -53,18 +56,16 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // CORS 設定
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowedOrigins(List.of(frontendUrl)); // 允許的前端地址
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 允許的HTTP方法
-        configuration.setAllowedHeaders(List.of("*")); // 允許的標頭
-        configuration.setAllowCredentials(true); // 允許攜帶憑證（cookie等）
+        configuration.setAllowedOrigins(List.of(frontendUrl)); // ✅ 正確注入
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); // ✅ 使用 /** 更穩定
         return source;
     }
 
