@@ -1,7 +1,7 @@
 package com.manufacturing.controller;
- 
+
 import java.util.List;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,71 +13,106 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
- 
+
 import com.manufacturing.model.Order;
+import com.manufacturing.model.User;
+import com.manufacturing.security.JwtUtil;
 import com.manufacturing.service.OrderService;
- 
-@RestController
+import com.manufacturing.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+
 @CrossOrigin(origins = "frontendUrl")
+@RestController
 @RequestMapping("/api/orders")
 public class OrderController {
- 
+
     @Autowired
     private OrderService orderService;
- 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable Long userId) {
+
+    @Autowired
+    private UserService userService;
+
+    // 從 JWT 抽出使用者並取得訂單
+    @GetMapping("/my")
+    public ResponseEntity<?> getMyOrders(HttpServletRequest request) {
         try {
-            List<Order> orders = orderService.getOrdersByUserId(userId);
+            String token = extractTokenFromRequest(request);
+            String username = JwtUtil.extractUsername(token);
+            User user = userService.getUserByUsername(username);
+            if (user == null) {
+                return ResponseEntity.status(401).body("無效使用者");
+            }
+
+            List<Order> orders = orderService.getOrdersByUserId(user.getId());
             return ResponseEntity.ok(orders);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError().body("伺服器錯誤：" + e.getMessage());
         }
     }
- 
+
     @PostMapping("/create")
-    public ResponseEntity<List<Order>> createOrder(@RequestBody Order order) {
+    public ResponseEntity<?> createOrder(@RequestBody Order order, HttpServletRequest request) {
         try {
-            // 驗證必要欄位
-            if (order.getUserId() == null || order.getProductName() == null || order.getProductName().isEmpty()) {
-                return ResponseEntity.badRequest().build();
+            String token = extractTokenFromRequest(request);
+            String username = JwtUtil.extractUsername(token);
+            User user = userService.getUserByUsername(username);
+            if (user == null) {
+                return ResponseEntity.status(401).body("無效使用者");
             }
- 
+
+            // 設定使用者 ID
+            order.setUserId(user.getId());
+
+            // 驗證必要欄位
+            if (order.getProductName() == null || order.getProductName().isEmpty()) {
+                return ResponseEntity.badRequest().body("產品名稱為必填");
+            }
+
             // 計算總金額
             if (order.getQuantity() != null && order.getPrice() != null) {
                 order.setTotalAmount(order.getQuantity() * order.getPrice());
             }
- 
-            // 確保狀態欄位有設置，若無則設為預設值
+
+            // 預設狀態
             if (order.getStatus() == null || order.getStatus().isEmpty()) {
                 order.setStatus("處理中");
             }
- 
-            List<Order> orders = orderService.createOrder(order);
-            return ResponseEntity.ok(orders);
-          } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+
+            Order createdOrder = orderService.createOrder(order);
+            return ResponseEntity.ok(createdOrder);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("建立訂單失敗：" + e.getMessage());
         }
     }
- 
+
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
         try {
             orderService.deleteOrder(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError().body("刪除失敗：" + e.getMessage());
         }
     }
-    
-      @PutMapping("/update/{id}")
-public ResponseEntity<List<Order>> updateOrder(@PathVariable Long id, @RequestBody Order order) {
-    try {
-        List<Order> updatedOrders = orderService.updateOrder(id, order);
-        return ResponseEntity.ok(updatedOrders);
-    } catch (Exception e) {
-        return ResponseEntity.internalServerError().build();
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody Order order) {
+        try {
+            Order updatedOrder = orderService.updateOrder(id, order);
+            return ResponseEntity.ok(updatedOrder);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("更新失敗：" + e.getMessage());
         }
+    }
+
+    private String extractTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 }
- 
