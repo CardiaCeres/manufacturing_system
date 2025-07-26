@@ -93,7 +93,7 @@ export default {
       return;
     }
 
-    axios.defaults.baseURL = "/api";
+    axios.defaults.baseURL = "https://manufacturing-system-latest.onrender.com/api";
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     axios.defaults.withCredentials = true;
 
