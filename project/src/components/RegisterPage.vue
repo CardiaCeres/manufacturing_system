@@ -12,9 +12,7 @@
             placeholder="🔒 密碼"
             required
           />
-          <span class="toggle-eye" @click="togglePassword">
-            👁️
-          </span>
+          <span class="toggle-eye" @click="togglePassword">👁️</span>
         </div>
 
         <input v-model="email" type="email" placeholder="📧 電子信箱" required />
@@ -31,7 +29,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   name: "RegisterPage",
@@ -40,17 +38,20 @@ export default {
       username: "",
       password: "",
       email: "",
-      showPassword: false,
       error: "",
       success: "",
-      loading: false
+      loading: false,
+      showPassword: false // 控制密碼顯示
     };
   },
   methods: {
+    togglePassword() {
+      this.showPassword = !this.showPassword;
+    },
     async register() {
       this.loading = true;
       try {
-        await axios.post("https://manufacturing-system-latest.onrender.com/api/register", {
+        await axios.post(`${this.$apiBaseUrl}/api/register`, {
           username: this.username,
           password: this.password,
           email: this.email
@@ -69,9 +70,6 @@ export default {
     },
     goToLogin() {
       this.$router.push("/login");
-    },
-    togglePassword() {
-      this.showPassword = !this.showPassword;
     }
   }
 };
@@ -133,16 +131,17 @@ export default {
 .password-field {
   position: relative;
 }
-
+.password-field input {
+  padding-right: 40px;
+}
 .toggle-eye {
   position: absolute;
   top: 50%;
-  right: 14px;
+  right: 12px;
   transform: translateY(-50%);
   cursor: pointer;
-  user-select: none;
   font-size: 18px;
-  color: #777;
+  user-select: none;
 }
 
 .register-form button {
@@ -199,5 +198,3 @@ export default {
   }
 }
 </style>
-   
-   
