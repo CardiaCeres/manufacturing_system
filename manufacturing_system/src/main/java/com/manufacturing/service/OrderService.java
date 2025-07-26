@@ -19,15 +19,16 @@ public class OrderService {
         return orderRepository.findByUserIdOrderByOrderNumberAsc(userId);
     }
 
-    public Order createOrder(Order order) {
-        return orderRepository.save(order);
-    }
+   public List<Order> createOrder(Order order) {
+    orderRepository.save(order);
+    return orderRepository.findByUserIdOrderByOrderNumberAsc(order.getUserId());
+}
 
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
     }
 
-    public Order updateOrder(Long id, Order order) {
+ public List<Order> updateOrder(Long id, Order order) {
         Optional<Order> existingOrderOpt = orderRepository.findById(id);
         if (existingOrderOpt.isPresent()) {
             Order existingOrder = existingOrderOpt.get();
@@ -40,12 +41,13 @@ public class OrderService {
             existingOrder.setTotalAmount(order.getTotalAmount());
             existingOrder.setStatus(order.getStatus());
             existingOrder.setOrderDate(order.getOrderDate());
- 
-            return orderRepository.save(existingOrder);
 
-            
+            orderRepository.save(existingOrder);
+ 
+            return orderRepository.findByUserIdOrderByOrderNumberAsc(existingOrder.getUserId());
         } else {
             throw new RuntimeException("訂單未找到，無法更新");
         }
     }
 }
+ 
