@@ -50,7 +50,7 @@ export default {
     async register() {
       this.loading = true;
       try {
-        await axios.post(`${this.$apiBaseUrl}/api/register`, {
+        await axios.post("https://manufacturing-system-latest.onrender.com/api/register", {
           username: this.username,
           password: this.password,
           email: this.email
