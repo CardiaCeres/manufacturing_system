@@ -4,7 +4,7 @@
       <h2>🔐 智慧訂單管理系統</h2>
       <form @submit.prevent="login" class="login-form">
         <input v-model="username" placeholder="使用者名稱" required />
-        
+
         <div class="password-field">
           <input
             :type="showPassword ? 'text' : 'password'"
@@ -23,9 +23,9 @@
           <p v-if="error" class="error">{{ error }}</p>
         </transition>
       </form>
-
       <p class="register-link">
-        還沒有帳號？<a @click="goToRegister">立即註冊</a>
+        還沒有帳號？
+        <a @click="goToRegister">立即註冊</a>
       </p>
     </div>
   </div>
@@ -40,31 +40,25 @@ export default {
     return {
       username: "",
       password: "",
-      showPassword: false,
-      error: ""
+      error: "",
+      showPassword: false // 控制是否顯示密碼
     };
   },
   methods: {
+    togglePassword() {
+      this.showPassword = !this.showPassword;
+    },
     async login() {
       try {
-        const response = await axios.post("https://manufacturing-system-latest.onrender.com/api/login", {
+        const response = await axios.post(`${this.$apiBaseUrl}/api/login`, {
           username: this.username,
           password: this.password
         });
-
-        const token = response.data.token;
-        const user = response.data.user;
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        localStorage.setItem("user", JSON.stringify(response.data));
         this.$router.push("/orders");
       } catch (err) {
         this.error = "登入失敗，請確認帳號與密碼是否正確。";
       }
-    },
-    togglePassword() {
-      this.showPassword = !this.showPassword;
     },
     goToRegister() {
       this.$router.push("/register");
@@ -74,6 +68,7 @@ export default {
 </script>
 
 <style scoped>
+/* 背景與佈局 */
 .login-wrapper {
   position: relative;
   min-height: 100vh;
@@ -103,6 +98,7 @@ export default {
   font-weight: bold;
 }
 
+/* 表單樣式 */
 .login-form input {
   display: block;
   width: 100%;
@@ -115,29 +111,30 @@ export default {
   background-color: #fdfdfd;
   transition: 0.3s;
 }
-
-.password-field {
-  position: relative;
-  width: 100%;
-}
-
-.toggle-eye {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  user-select: none;
-  font-size: 18px;
-  color: #666;
-}
-
 .login-form input:focus {
   border-color: #667eea;
   outline: none;
   box-shadow: 0 0 4px rgba(102, 126, 234, 0.4);
 }
 
+/* 密碼欄位與小眼睛 */
+.password-field {
+  position: relative;
+}
+.password-field input {
+  padding-right: 40px;
+}
+.toggle-eye {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}
+
+/* 登入按鈕 */
 .login-form button {
   width: 100%;
   padding: 14px;
@@ -155,6 +152,7 @@ export default {
   background-color: #5a67d8;
 }
 
+/* 錯誤提示 */
 .error {
   color: #e74c3c;
   margin-top: 12px;
@@ -162,6 +160,7 @@ export default {
   animation: shake 0.3s;
 }
 
+/* 註冊連結 */
 .register-link {
   margin-top: 20px;
   font-size: 14px;
@@ -177,6 +176,7 @@ export default {
   color: #5a67d8;
 }
 
+/* 動畫 */
 @keyframes shake {
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
