@@ -47,7 +47,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post(`${this.$apiBaseUrl}/api/login`, {
+        const response = await axios.post("https://manufacturing-system-latest.onrender.com/api/login", {
           username: this.username,
           password: this.password
         });
