@@ -12,7 +12,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                    .allowedOrigins(frontendUrl)  // 讀取注入的變數
+                    .allowedOrigins("https://manufacturing-system-latest.onrender.com")  // 讀取注入的變數
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true);
