@@ -5,21 +5,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-<<<<<<< HEAD
-public class WebConfig {
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")
-                    .allowedOrigins("https://manufacturing-system-latest.onrender.com")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                    .allowedHeaders("*")
-                    .allowCredentials(true);
-            }
-        };
-=======
 public class WebConfig implements WebMvcConfigurer {
 
     @SuppressWarnings("null")
@@ -30,6 +15,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE")  // 允許的HTTP方法
                 .allowedHeaders("*")  // 設置允許的請求頭
                 .allowCredentials(true);  // 設置是否允許帶有憑證的請求
->>>>>>> parent of 74d61a4 (Update WebConfig.java)
     }
 }
