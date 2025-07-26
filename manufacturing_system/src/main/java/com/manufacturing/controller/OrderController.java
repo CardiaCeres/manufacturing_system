@@ -23,7 +23,7 @@ import com.manufacturing.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 
-@CrossOrigin(origins = "frontendUrl")
+@CrossOrigin(origins = "https://manufacturing-system-latest.onrender.com")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
