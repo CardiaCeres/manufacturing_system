@@ -13,7 +13,7 @@ import com.manufacturing.security.JwtUtil;
 import com.manufacturing.service.UserService;
 
 @RestController
-@CrossOrigin(origins = "frontendUrl")
+@CrossOrigin(origins = "https://manufacturing-system-latest.onrender.com")
 @RequestMapping("/api")
 public class UserController {
 
