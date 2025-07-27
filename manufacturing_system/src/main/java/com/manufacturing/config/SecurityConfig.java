@@ -39,7 +39,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/index.html", "/favicon.ico",
-        "/static/**", "/assets/**", "/js/**", "/css/**", // 加上你的靜態路徑
+        "/static/**", "/assets/**", "/js/**", "/css/**, "/images/**", // 加上你的靜態路徑
         "/api/login", "/api/register").permitAll()
                 .anyRequest().authenticated()
             )
