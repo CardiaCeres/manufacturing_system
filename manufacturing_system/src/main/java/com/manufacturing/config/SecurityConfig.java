@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .requestMatchers(
         "/", "/index.html", "/favicon.ico",
         "/static/**", "/assets/**", "/js/**", "/css/**", "/img/**", "/fonts/**", // 所有非靜態資源的路徑
-        "/api/login", "/api/register", "/api/orders"
+        "/api/login", "/api/register"
     ).permitAll()
                 .anyRequest().authenticated()
             )
