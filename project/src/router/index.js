@@ -1,33 +1,14 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Login from "@/views/Login.vue";
-import Register from "@/views/Register.vue";
-import OrderManagement from "@/views/OrderManagement.vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginPage from '../components/LoginPage.vue';
+import OrderManagement from '../components/OrderManagement.vue';
+import RegisterPage from '../components/RegisterPage.vue';
+import HomeView from '../components/HomeView.vue';
 
 const routes = [
-  {
-    path: "/login",
-    name: "Login",
-    component: Login
-  },
-  {
-    path: "/register",
-    name: "Register",
-    component: Register
-  },
-  {
-    path: "/orders",
-    name: "OrderManagement",
-    component: OrderManagement,
-    meta: { requiresAuth: true } // 需要登入才能訪問
-  },
-  {
-    path: "/",
-    redirect: "/orders"
-  },
-  {
-    path: "/:pathMatch(.*)*", // 404 頁面可自行建立
-    redirect: "/login"
-  }
+  { path: '/', name: 'Home', component: HomeView },
+  { path: '/login', name: 'Login', component: LoginPage },
+  { path: '/orders', name: 'Orders', component: OrderManagement, meta: { requiresAuth: true } },
+  { path: '/register', name: 'Register', component: RegisterPage }
 ];
 
 const router = createRouter({
@@ -35,14 +16,18 @@ const router = createRouter({
   routes
 });
 
-// 全域路由守衛：檢查 token，沒有就導到登入頁
+// 全局路由守衛
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
+  // 需要登入才能進入的頁面
   if (to.meta.requiresAuth && !token) {
-    next({ name: "Login" });
+    next('/login'); // 沒 token 導向登入頁
+  } else if ((to.path === '/login' || to.path === '/register') && token) {
+    // 如果已登入，避免回到登入或註冊頁，導向首頁或訂單頁
+    next('/orders');
   } else {
-    next();
+    next(); // 其他路由正常放行
   }
 });
 
