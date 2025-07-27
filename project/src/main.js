@@ -7,7 +7,7 @@ import axios from 'axios';
 const app = createApp(App);
 
 // ➤ 設定 Axios baseURL
-axios.defaults.baseURL = "https://manufacturing-system-latest.onrender.com";  // ← 換成你實際後端 API 網址
+app.config.globalProperties.$apiBaseUrl = "https://manufacturing-system-latest.onrender.com";  // ← 換成你實際後端 API 網址
 
 // ➤ 每次刷新都從 localStorage 設定 JWT Token
 const token = localStorage.getItem("token");
