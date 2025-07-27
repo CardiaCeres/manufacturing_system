@@ -7,7 +7,7 @@ import axios from 'axios';
 const app = createApp(App);
 
 // 1. 設定 axios 基礎網址 (請換成你的後端 API 網址)
-axios.defaults.baseURL = "https://manufacturing-system-latest.onrender.com";
+axios.defaults.baseURL = "https://manufacturing-system-latest.onrender.com/api";
 
 // 2. 每次刷新都從 localStorage 讀取 token 並設置 Authorization header
 const token = localStorage.getItem("token");
