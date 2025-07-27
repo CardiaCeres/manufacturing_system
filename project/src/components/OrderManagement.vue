@@ -87,17 +87,14 @@ export default {
     };
   },
   created() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (!token) {
-      this.$router.push("/login");
+      this.$router.push('/login');
       return;
     }
 
-    axios.defaults.baseURL = "https://manufacturing-system-latest.onrender.com/api";
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios.defaults.withCredentials = true;
-
-    this.fetchOrders();
+    // token 存在，呼叫 API 取訂單資料
+    this.fetchOrdersAfterAuth();
   },
   methods: {
     async fetchOrders() {
