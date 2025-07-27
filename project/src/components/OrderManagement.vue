@@ -94,7 +94,7 @@ export default {
     }
 
     // token 存在，呼叫 API 取訂單資料
-    this.fetchOrdersAfterAuth();
+    this.fetchOrders();
   },
   methods: {
     async fetchOrders() {
