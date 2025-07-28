@@ -63,7 +63,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of(frontendUrl)); // 允許的前端地址
+        configuration.setAllowedOrigins(List.of("frontendUrl")); // 允許的前端地址
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 允許的HTTP方法
         configuration.setAllowedHeaders(List.of("*")); // 允許的標頭
         configuration.setAllowCredentials(true); // 允許攜帶憑證（cookie等）
