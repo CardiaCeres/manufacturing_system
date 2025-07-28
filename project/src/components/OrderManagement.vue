@@ -93,8 +93,10 @@ export default {
       return;
     }
 
-    // token 存在，呼叫 API 取訂單資料
-    this.fetchOrders();
+    axios.defaults.baseURL = "/api";
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios.defaults.withCredentials = true;
+
   },
   methods: {
     async fetchOrders() {
