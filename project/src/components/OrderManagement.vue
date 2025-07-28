@@ -93,7 +93,7 @@ export default {
       return;
     }
 
-    axios.defaults.baseURL = "${this.$apiBaseUrl}/api";
+    axios.defaults.baseURL = "/api";
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     axios.defaults.withCredentials = true;
 
