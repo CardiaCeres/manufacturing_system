@@ -50,7 +50,7 @@ export default {
     async register() {
       this.loading = true;
       try {
-        await axios.post('/api/register', {
+        await axios.post('/register', {
           username: this.username,
           password: this.password,
           email: this.email
