@@ -32,7 +32,14 @@
             </div>
           </div>
         </section>
-   
+
+   <!-- 新增 AI 聊天框 -->
+      <section class="ai-chat-section">
+        <div class="container content-box">
+          <AiChat />
+        </div>
+      </section>
+
         <footer class="footer content-box">
           <p>© 2025 訂單管理系統 | 由你的企業專屬打造</p>
         </footer>
@@ -40,13 +47,22 @@
     </div>
   </template>
    
-  <script>
-  export default {
-    name: "HomeView",
-  };
-  </script>
+<script>
+import AiChat from "@/components/AiChat.vue";
+
+export default {
+  name: "HomeView",
+  components: {
+    AiChat
+  }
+};
+</script>
    
   <style scoped>
+/* 可以針對 ai-chat-section 加些間距 */
+.ai-chat-section {
+  margin: 40px 0;
+}
   /* 背景設定 */
   .home {
     font-family: 'Segoe UI', sans-serif;
