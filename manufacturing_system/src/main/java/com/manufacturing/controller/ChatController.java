@@ -9,8 +9,8 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
 @CrossOrigin(origins = "frontendUrl") 
+@RequestMapping("/api")
 public class ChatController {
 
     @Value("${google.gemini.api_key}")
