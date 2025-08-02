@@ -29,11 +29,26 @@ public class ChatController {
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", "google/gemini-2.0-flash-exp:free");
-        requestBody.put("messages", List.of(
-                Map.of("role", "user", "content", List.of(
-                        Map.of("type", "text", "text", userMessage)
-                ))
+
+        List<Map<String, Object>> messages = new ArrayList<>();
+
+        // 加入 System 提示語，設定 AI 角色
+        messages.add(Map.of(
+            "role", "system",
+            "content", List.of(
+                Map.of("type", "text", "text", "你是一個智慧客服助理，負責回答使用者有關訂單管理系統的問題，這個系統提供登入、註冊、查詢、新增、修改、刪除訂單等功能，請用簡單中文回覆問題。")
+            )
         ));
+
+        // 加入使用者輸入
+        messages.add(Map.of(
+            "role", "user",
+            "content", List.of(
+                Map.of("type", "text", "text", userMessage)
+            )
+        ));
+
+        requestBody.put("messages", messages);
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
 
