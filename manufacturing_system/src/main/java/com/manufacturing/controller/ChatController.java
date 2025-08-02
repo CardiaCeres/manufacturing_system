@@ -36,7 +36,7 @@ public class ChatController {
         messages.add(Map.of(
             "role", "system",
             "content", List.of(
-                Map.of("type", "text", "text", "你是一個智慧客服助理，負責回答使用者有關訂單管理系統的問題，這個系統提供登入、註冊、查詢、新增、修改、刪除訂單等功能，請用簡單中文回覆問題。")
+                Map.of("type", "text", "text", "你是一個智慧客服助理，負責回答使用者有關訂單管理系統的問題，這個系統提供登入、註冊、查詢、新增、修改、刪除訂單等功能，請用中文簡單正確回覆問題。")
             )
         ));
 
