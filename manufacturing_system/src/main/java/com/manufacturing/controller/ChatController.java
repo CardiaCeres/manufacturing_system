@@ -23,6 +23,10 @@ public class ChatController {
 
         String url = "https://openrouter.ai/api/v1/chat/completions";
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(apiKey);  // 只帶授權，不帶HTTP-Referer、X-Title
+
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", "google/gemini-2.0-flash-exp:free");
         requestBody.put("messages", List.of(
