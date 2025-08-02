@@ -62,7 +62,8 @@ public class ChatController {
                     Map<?, ?> choice = (Map<?, ?>) choices.get(0);
                     Map<?, ?> message = (Map<?, ?>) choice.get("message");
                     String reply = message.get("content").toString();
-                         String cleanedReply = rawReply
+
+                    String cleanedReply = rawReply
                         .replaceAll("\\*\\*", "")             // 移除 ** 粗體
                         .replaceAll("(?m)^\\d+\\.\\s*", "")   // 移除項目編號
                         .replace("\\n", "\n")                 // 將字串中的 \n 顯示為換行
@@ -70,7 +71,7 @@ public class ChatController {
                         .trim();
 
                 return Map.of("response", cleanedReply);
-            }
+            
                 }
             }
             return Map.of("response", "抱歉，未收到有效回覆。");
