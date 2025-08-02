@@ -8,69 +8,75 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/chat")
 @CrossOrigin(origins = "frontendUrl")
+@RequestMapping("/api")
 public class ChatController {
 
     @Value("${google.gemini.api_key}")
     private String apiKey;
 
-    private static final String OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
+    private final RestTemplate restTemplate = new RestTemplate();
 
-    @PostMapping
-    public ResponseEntity<?> chat(@RequestBody Map<String, String> request) {
-        String userMessage = request.get("message");
+    @PostMapping("/chat")
+    public Map<String, String> chat(@RequestBody Map<String, String> payload) {
+        String userMessage = payload.get("message");
 
-        // 系統提示：指導 AI 聚焦在你的訂單管理系統操作流程
-        String systemPrompt = """
-你是訂單管理系統的 AI 助手，請根據以下說明以簡潔語句回答使用者問題：
+        String url = "https://openrouter.ai/api/v1/chat/completions";
 
-- 登入：輸入帳號密碼登入系統。
-- 註冊：填寫帳號、密碼與 Email 建立帳戶。
-- 查詢訂單：登入即可查詢。
-- 新增訂單：登入後點「新增訂單」，填寫商品與數量後送出。
-- 修改訂單：在訂單列表點「編輯」，修改後儲存。
-- 刪除訂單：點「刪除」並確認即可移除該筆訂單。
-
-請直接回應步驟，不需問候語或額外說明。
-""";
-
-        // 封裝請求訊息
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "mistralai/mixtral-8x7b");
-        requestBody.put("messages", List.of(
-                Map.of("role", "system", "content", systemPrompt),
-                Map.of("role", "user", "content", userMessage)
-        ));
-
-        // 設定 Header
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiKey);
-        // headers.add("HTTP-Referer", "https://your-site-url.example.com"); // 可選
-        // headers.add("X-Title", "Your Site Name"); // 可選
+        headers.setBearerAuth(apiKey);  // 只帶授權，不帶HTTP-Referer、X-Title
 
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", "google/gemini-2.0-flash-exp:free");
+
+        List<Map<String, Object>> messages = new ArrayList<>();
+
+        // 加入 System 提示語，設定 AI 角色
+        messages.add(Map.of(
+            "role", "system",
+            "content", List.of(
+                Map.of("type", "text", "text", "你是一個智慧客服助理，負責回答使用者有關訂單管理系統的問題，這個系統提供登入、註冊、查詢、新增、修改、刪除訂單等功能，請用中文簡單正確回覆問題。")
+            )
+        ));
+
+        // 加入使用者輸入
+        messages.add(Map.of(
+            "role", "user",
+            "content", List.of(
+                Map.of("type", "text", "text", userMessage)
+            )
+        ));
+
+        requestBody.put("messages", messages);
+
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
 
         try {
-            // 發送 POST 請求
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<Map> response = restTemplate.exchange(
-                    OPENROUTER_URL,
-                    HttpMethod.POST,
-                    entity,
-                    Map.class
-            );
+            ResponseEntity<Map> response = restTemplate.postForEntity(url, requestEntity, Map.class);
+            Map<?, ?> responseBody = response.getBody();
 
-            List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
-            Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
-            String reply = (String) message.get("content");
+            if (responseBody != null && responseBody.containsKey("choices")) {
+                List<?> choices = (List<?>) responseBody.get("choices");
+                if (!choices.isEmpty()) {
+                    Map<?, ?> choice = (Map<?, ?>) choices.get(0);
+                    Map<?, ?> message = (Map<?, ?>) choice.get("message");
+                    String reply = message.get("content").toString();
+                         String cleanedReply = rawReply
+                        .replaceAll("\\*\\*", "")             // 移除 ** 粗體
+                        .replaceAll("(?m)^\\d+\\.\\s*", "")   // 移除項目編號
+                        .replace("\\n", "\n")                 // 將字串中的 \n 顯示為換行
+                        .replaceAll("^response\\s*:\\s*", "") // 移除開頭的 response:（如有）
+                        .trim();
 
-            // 回傳 AI 回應
-            return ResponseEntity.ok(Map.of("response", reply));
+                return Map.of("response", cleanedReply);
+            }
+                }
+            }
+            return Map.of("response", "抱歉，未收到有效回覆。");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "AI 回覆失敗：" + e.getMessage()));
+            e.printStackTrace();
+            return Map.of("response", "呼叫 OpenRouter API 發生錯誤：" + e.getMessage());
         }
     }
 }
