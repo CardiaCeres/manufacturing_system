@@ -33,10 +33,19 @@
           </div>
         </section>
 
-   <!-- 新增 AI 聊天框 -->
-      <section class="ai-chat-section">
-        <div class="container content-box">
-          <AiChat />
+       <!-- ✅ 新增聊天室區塊 -->
+      <section class="chat-section">
+        <div class="container content-box chat-box">
+          <h2>🧠 小幫手聊天室</h2>
+          <div class="chat-messages" ref="chatMessages">
+            <div v-for="(msg, idx) in messages" :key="idx" :class="msg.from">
+              <strong>{{ msg.from === 'user' ? '你：' : '小幫手：' }}</strong>{{ msg.text }}
+            </div>
+          </div>
+          <div class="chat-input">
+            <input v-model="userInput" placeholder="請輸入您的問題..." @keyup.enter="sendMessage" />
+            <button @click="sendMessage">送出</button>
+          </div>
         </div>
       </section>
 
@@ -47,22 +56,13 @@
     </div>
   </template>
    
-<script>
-import AiChat from "@/components/AiChat.vue";
-
-export default {
-  name: "HomeView",
-  components: {
-    AiChat
-  }
-};
-</script>
+  <script>
+  export default {
+    name: "HomeView",
+  };
+  </script>
    
   <style scoped>
-/* 可以針對 ai-chat-section 加些間距 */
-.ai-chat-section {
-  margin: 40px 0;
-}
   /* 背景設定 */
   .home {
     font-family: 'Segoe UI', sans-serif;
