@@ -21,7 +21,7 @@ public class ChatController {
     public String chat(@RequestBody Map<String, String> payload) {
         String userMessage = payload.get("message");
 
-        String url = "https://openrouter.ai/api/v1/chat/completions";
+        String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
