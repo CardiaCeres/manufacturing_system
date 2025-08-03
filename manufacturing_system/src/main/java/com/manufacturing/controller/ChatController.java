@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "frontend.url") // 改成你前端網址
+@CrossOrigin(origins = "frontend.url")
 @RequestMapping("/api")
 public class ChatController {
 
@@ -26,29 +26,20 @@ public class ChatController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // 建立 contents 陣列，包含 system 與 user 兩個角色訊息
-        List<Map<String, Object>> contents = new ArrayList<>();
-
-        // system 角色提示，設定 AI 助理行為及回答風格
-        Map<String, Object> system = new HashMap<>();
-        system.put("role", "system");
-        system.put("parts", List.of(
-                Map.of("text", "你是一個智慧客服助理，請用繁體中文簡潔回覆與訂單管理系統有關的問題。"
-                        + "功能包括登入、註冊、查詢、新增、修改、刪除訂單，"
-                        + "請僅針對問題回覆相關功能，不要加入歡迎詞或說明其他功能。")
-        ));
-        contents.add(system);
-
-        // user 角色，帶入使用者提問
-        Map<String, Object> user = new HashMap<>();
-        user.put("role", "user");
-        user.put("parts", List.of(
-                Map.of("text", userMessage)
-        ));
-        contents.add(user);
-
-        // 組成完整請求 JSON
         Map<String, Object> requestBody = new HashMap<>();
+
+        // 準備 contents 陣列（符合 Gemini API 規格）
+        Map<String, Object> content = new HashMap<>();
+        content.put("role", "user");
+
+        List<Map<String, Object>> parts = new ArrayList<>();
+        parts.add(Map.of("text",
+               "你是一個智慧客服助理，負責回答有關訂單管理系統的問題，請用中文正確簡單回覆問題，僅回答與問題直接相關的部分並                  去除英文和無關的字。功能包括：登入、註冊、查詢、新增、修改、刪除訂單。));
+        content.put("parts", parts);
+
+        List<Map<String, Object>> contents = new ArrayList<>();
+        contents.add(content);
+
         requestBody.put("contents", contents);
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
