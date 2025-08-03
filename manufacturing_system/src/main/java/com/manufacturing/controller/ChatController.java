@@ -34,7 +34,7 @@ public class ChatController {
 
         List<Map<String, Object>> parts = new ArrayList<>();
         parts.add(Map.of("text",
-               "你是一個智慧客服助理，負責回答有關訂單管理系統的問題，請用中文正確簡單回覆問題，僅回答與問題直接相關的部分並                  去除英文和無關的字。功能包括：登入、註冊、查詢、新增、修改、刪除訂單。));
+               "你是一個智慧客服助理，負責回答有關訂單管理系統的問題，請用中文正確簡單回覆問題，僅回答與問題直接相關的部分並                去除英文和無關的字。"));
         content.put("parts", parts);
 
         List<Map<String, Object>> contents = new ArrayList<>();
