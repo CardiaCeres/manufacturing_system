@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "frontend.url")
+@CrossOrigin(origins = "frontend.url") 
 @RequestMapping("/api")
 public class ChatController {
 
@@ -26,21 +26,18 @@ public class ChatController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        Map<String, Object> requestBody = new HashMap<>();
-
-        // 準備 contents 陣列（符合 Gemini API 規格）
         Map<String, Object> content = new HashMap<>();
         content.put("role", "user");
 
-        List<Map<String, Object>> parts = new ArrayList<>();
-        parts.add(Map.of("text",
-               "你是一個智慧客服助理，負責回答有關訂單管理系統的問題，請用中文正確簡單回覆問題，僅回答與問題直接相關的部分並                去除英文和無關的字。功能包括：登入、註冊、查詢、新增、修改、刪除訂單。登入:輸入帳號與密碼即可登入系統。註冊：填寫帳號、密碼與Email建立帳戶。查詢訂單:登入後可查詢訂單。新增訂單:登入後點選新增訂單，填寫商品與數量後送出。修改訂單:於訂單列表點選編輯進行修改。刪除訂單:點選刪除後確認即可移除該筆訂單。"));
-        content.put("parts", parts);
+        // 把引導語 + 使用者問題合併成一段話
+        String prompt = """
+你是一個智慧客服助理，負責回答有關訂單管理系統的問題，請用中文正確簡單回覆問題，僅回答與問題直接相關的部分並去除英文和無關的字。功能包括：登入、註冊、查詢、新增、修改、刪除訂單。登入:輸入帳號與密碼即可登入系統。註冊：填寫帳號、密碼與Email建立帳戶。查詢訂單:登入後可查詢訂單。新增訂單:登入後點選新增訂單，填寫商品與數量後送出。修改訂單:於訂單列表點選編輯進行修改。刪除訂單:點選刪除後確認即可移除該筆訂單。
+問題：""" + userMessage;
 
-        List<Map<String, Object>> contents = new ArrayList<>();
-        contents.add(content);
+        content.put("parts", List.of(Map.of("text", prompt)));
 
-        requestBody.put("contents", contents);
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("contents", List.of(content));
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
 
@@ -56,8 +53,7 @@ public class ChatController {
                     List<?> partsList = (List<?>) contentMap.get("parts");
                     if (!partsList.isEmpty()) {
                         Map<?, ?> part = (Map<?, ?>) partsList.get(0);
-                        String reply = part.get("text").toString();
-                        return reply.trim();
+                        return part.get("text").toString().trim();
                     }
                 }
             }
