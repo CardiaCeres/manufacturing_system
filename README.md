@@ -10,7 +10,7 @@
  
 ## 🚀 技術棧（Tech Stack）
  
-- **Frontend**：Vue.js 3 + Vite
+- **Frontend**：Vue.js 3 
 - **Backend**：Spring Boot + REST API
 - **Database**：PostgreSQL（託管於 [Neon](https://neon.tech)）
 - **CI/CD**：GitHub Actions
