@@ -131,7 +131,7 @@ export default {
         this.resetForm();
       } catch (error) {
         console.error("操作失敗", error);
-        alert("操作失敗，請稍後再試！");
+        alert("請填寫完整的訂單資料");
       }
     },
     editOrder(order) {
