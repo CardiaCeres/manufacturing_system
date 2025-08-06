@@ -51,10 +51,12 @@ public class ChatController {
                     Map<?, ?> candidate = (Map<?, ?>) candidates.get(0);
                     Map<?, ?> contentMap = (Map<?, ?>) candidate.get("content");
                     List<?> partsList = (List<?>) contentMap.get("parts");
-                    if (!partsList.isEmpty()) {
-                        Map<?, ?> part = (Map<?, ?>) partsList.get(0);
-                        return part.get("text").toString().trim();
-                    }
+                   if (!partsList.isEmpty()) {
+                     Map<?, ?> part = (Map<?, ?>) partsList.get(0);
+                     String reply = part.get("text").toString();
+                     reply = reply.replaceAll("\\*\\*", ""); // <-- 這行是重點
+                     return reply.trim();
+                   }
                 }
             }
             return "抱歉，未收到有效回覆。";
