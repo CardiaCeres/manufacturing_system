@@ -54,7 +54,10 @@ public class ChatController {
                    if (!partsList.isEmpty()) {
                      Map<?, ?> part = (Map<?, ?>) partsList.get(0);
                      String reply = part.get("text").toString();
-                     reply = reply.replaceAll("\\*\\*", ""); // <-- 這行是重點
+                     // 使用正則表達式移除成對的 **粗體**
+                     reply = reply.replaceAll("\\*\\*(.*?)\\*\\*", "$1");
+                     // 或若還有單獨出現的 *（非成對），也一併移除
+                     reply = reply.replace("*", "");
                      return reply.trim();
                    }
                 }
