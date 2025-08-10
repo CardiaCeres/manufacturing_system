@@ -27,14 +27,14 @@
 - 📈 管理者儀表板，提供關鍵數據分析
 - ☁️ 資料儲存於雲端 Neon PostgreSQL，安全又快速
 - 🔄 自動部署至 Render，開發更流暢
- 
+- 🤖 AI 客服小幫手：整合自然語言處理（NLP）技術，能透過智慧對話協助使用者快速查詢訂單狀態、解決常見問題，提升客服效率與使用者體驗。
 ---
  
 ## 🖼️ 系統架構圖（Architecture）
  
 ```text
-Vue (Frontend)
+project (Frontend Vue)
    |
    |  REST API
    ▼
-Spring Boot (Backend) ——> PostgreSQL (hosted on Neon)
+manufacturing_system (Backend Spring Boot) ——> PostgreSQL (hosted on Neon)
