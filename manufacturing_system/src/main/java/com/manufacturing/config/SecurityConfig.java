@@ -32,6 +32,10 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
+    // 從 application.properties 讀 frontend.url
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
