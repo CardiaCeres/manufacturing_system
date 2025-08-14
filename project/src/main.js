@@ -3,7 +3,10 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://manufacturing-system-latest.onrender.com/api'
+const backendUrl = process.env.VUE_APP_BACKEND_URL
+console.log("Axios Base URL:", backendUrl)
+
+axios.defaults.baseURL = backendUrl
 
 axios.interceptors.request.use(
   config => {
