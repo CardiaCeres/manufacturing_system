@@ -12,6 +12,6 @@ jobs:
     steps:
       - name: Simulate user traffic to Render
         run: |
-          curl -I -s -o /dev/null -w "Status: %{http_code}\n" \
+          curl -s -o /dev/null -w "Status: %{http_code}\n" \
           -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" \
            https://manufacturing-system-latest.onrender.com
