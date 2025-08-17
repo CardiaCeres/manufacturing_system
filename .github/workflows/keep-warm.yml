@@ -1,8 +1,8 @@
-name: Keep Render Warm (Weekdays 07:00 TWT)
+name: Keep Render Warm (08:00–18:00 TWT)
 
 on:
   schedule:
-    - cron: '0,10,20,30,40,50 0-12 * * *'  # 每週一到週五，UTC 23:00 (TWT 07:00)
+    - cron: '0,30 23,0-9 * * *'  # 每小時整點與半點（UTC 23:00 ~ 09:30）
   workflow_dispatch:         # 可手動執行
 
 jobs:
