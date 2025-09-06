@@ -141,6 +141,12 @@ export default {
   color: #666;
 }
 
+.reset-form input:focus {
+  border-color: #667eea;
+  outline: none;
+  box-shadow: 0 0 4px rgba(102, 126, 234, 0.4);
+}
+
 .reset-form button {
   width: 100%;
   padding: 14px;
@@ -156,12 +162,14 @@ export default {
 }
 
 .reset-form button:hover {
-  background-color: #5a67d8;
+  background-color: #d35400;
 }
 
 .message {
-  margin-top: 15px;
-  color: green;
+  color: #e74c3c;
+  margin-top: 12px;
+  font-size: 14px;
+  animation: shake 0.3s;
 }
 
 .back-link {
