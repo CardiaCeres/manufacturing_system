@@ -1,7 +1,7 @@
 <template>
   <div class="forgot-wrapper">
     <div class="forgot-box">
-      <h2>🔑 重設密碼</h2>
+      <h2>🔑重設密碼</h2>
       <form @submit.prevent="submitEmail" class="forgot-form">
         <input v-model="email" placeholder="請輸入註冊信箱" required />
         <button type="submit">送出</button>
