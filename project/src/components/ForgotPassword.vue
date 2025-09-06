@@ -103,12 +103,14 @@ export default {
 }
 
 .forgot-form button:hover {
-  background-color: #5a67d8;
+  background-color: #d35400;
 }
 
 .message {
-  margin-top: 15px;
-  color: green;
+  color: #e74c3c;
+  margin-top: 12px;
+  font-size: 14px;
+  animation: shake 0.3s;
 }
 
 .back-link {
