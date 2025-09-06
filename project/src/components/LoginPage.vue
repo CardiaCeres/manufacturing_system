@@ -28,7 +28,7 @@
         還沒有帳號？<a @click="goToRegister">立即註冊</a>
       </p>
       <p class="forgot-link">
-        忘記密碼？<a @click="goToForgot">點此重設</a>
+        忘記密碼？<a @click="goToForgot">忘記密碼</a>
       </p>
     </div>
   </div>
