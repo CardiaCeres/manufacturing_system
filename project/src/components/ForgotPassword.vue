@@ -43,53 +43,72 @@ export default {
     }
   }
 };
-</script>
-
 <style scoped>
 .forgot-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   min-height: 100vh;
-  background: #f8f9fa;
+  background-image: url('/public/photo.png');
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .forgot-box {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 40px 30px;
   width: 100%;
   max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 0.6s ease-out;
 }
+
 .forgot-box h2 {
-  margin-bottom: 20px;
-  font-size: 22px;
+  font-size: 26px;
+  margin-bottom: 25px;
+  color: #333;
+  font-weight: bold;
 }
+
 .forgot-form input {
+  display: block;
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 14px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 16px;
+  background-color: #fdfdfd;
+  transition: 0.3s;
 }
+
 .forgot-form button {
   width: 100%;
-  padding: 12px;
-  background: #e67e22;
+  padding: 14px;
+  margin-top: 10px;
+  background-color: #667eea;
   color: white;
-  border: none;
-  border-radius: 10px;
+  font-size: 16px;
   font-weight: bold;
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
+
 .forgot-form button:hover {
-  background: #d35400;
+  background-color: #5a67d8;
 }
+
 .message {
   margin-top: 15px;
   color: green;
 }
+
 .back-link {
   margin-top: 20px;
   font-size: 14px;
@@ -97,6 +116,15 @@ export default {
 .back-link a {
   color: #667eea;
   cursor: pointer;
+  font-weight: bold;
   text-decoration: underline;
+}
+.back-link a:hover {
+  color: #5a67d8;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 </style>
