@@ -43,6 +43,8 @@ export default {
     }
   }
 };
+</script>
+
 <style scoped>
 .forgot-wrapper {
   position: relative;
