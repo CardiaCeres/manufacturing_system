@@ -27,6 +27,9 @@
       <p class="register-link">
         還沒有帳號？<a @click="goToRegister">立即註冊</a>
       </p>
+      <p class="forgot-link">
+        忘記密碼？<a @click="goToForgot">點此重設</a>
+      </p>
     </div>
   </div>
 </template>
@@ -68,6 +71,9 @@ export default {
     },
     goToRegister() {
       this.$router.push("/register");
+    },
+    goToForgot() {
+      this.$router.push("/forgot-password");
     }
   }
 };
@@ -175,6 +181,21 @@ export default {
 }
 .register-link a:hover {
   color: #5a67d8;
+}
+
+.forgot-link {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+.forgot-link a {
+  color: #e67e22;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.forgot-link a:hover {
+  color: #d35400;
 }
 
 @keyframes shake {
