@@ -145,7 +145,7 @@ export default {
   width: 100%;
   padding: 14px;
   margin-top: 10px;
-  background-color: #667eea;
+  background-color: #e67e22;
   color: white;
   font-size: 16px;
   font-weight: bold;
