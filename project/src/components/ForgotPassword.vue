@@ -88,7 +88,7 @@ export default {
   transition: 0.3s;
 }
 
-.login-form input:focus {
+.forgot-form input:focus {
   border-color: #667eea;
   outline: none;
   box-shadow: 0 0 4px rgba(102, 126, 234, 0.4);
