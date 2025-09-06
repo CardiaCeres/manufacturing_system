@@ -1,7 +1,7 @@
 <template>
   <div class="register-wrapper">
     <div class="register-card">
-      <h2><span class="icon">📝</span>立即註冊</h2>
+      <h2><span class="icon">📝立即註冊</h2>
       <form @submit.prevent="register" class="register-form">
         <input v-model="username" placeholder="👤 使用者名稱" required />
 
