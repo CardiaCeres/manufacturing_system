@@ -3,7 +3,7 @@ import LoginPage from '../components/LoginPage.vue';
 import OrderManagement from '../components/OrderManagement.vue';
 import RegisterPage from '../components/RegisterPage.vue';
 import HomeView from '../components/HomeView.vue';
-import ForgotPassword from '@/views/ForgotPassword.vue'
+import ForgotPassword from '../components/ForgotPassword.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: HomeView },
