@@ -30,6 +30,9 @@
       <p class="forgot-link">
         忘記密碼？<a @click="goToForgot">忘記密碼</a>
       </p>
+      <p class="home-link">
+        <a @click="goToHome">🏠 返回首頁</a>
+      </p>
     </div>
   </div>
 </template>
@@ -74,6 +77,9 @@ export default {
     },
     goToForgot() {
       this.$router.push("/forgot-password");
+    },
+    goToHome() {
+      this.$router.push("/");
     }
   }
 };
@@ -197,7 +203,21 @@ export default {
 .forgot-link a:hover {
   color: #d35400;
 }
-
+.home-link {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+}
+.home-link a {
+  color: #1abc9c;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.home-link a:hover {
+  color: #16a085;
+}
 @keyframes shake {
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
