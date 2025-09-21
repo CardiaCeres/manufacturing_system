@@ -20,6 +20,7 @@ public class OrderService {
     }
 
     public Order createOrder(Order order) {
+        order.setTotalAmount(order.getQuantity() * order.getPrice());
         return orderRepository.save(order);
     }
 
@@ -40,7 +41,8 @@ public class OrderService {
             existingOrder.setTotalAmount(order.getTotalAmount());
             existingOrder.setStatus(order.getStatus());
             existingOrder.setOrderDate(order.getOrderDate());
- 
+            existingOrder.setTotalAmount(existingOrder.getQuantity() * existingOrder.getPrice());
+
             return orderRepository.save(existingOrder);
 
             
