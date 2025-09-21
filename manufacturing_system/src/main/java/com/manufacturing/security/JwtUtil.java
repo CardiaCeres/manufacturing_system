@@ -2,7 +2,6 @@ package com.manufacturing.security;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-
 import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.JwtException;
@@ -12,11 +11,11 @@ import io.jsonwebtoken.security.Keys;
 
 public class JwtUtil {
 
-    // 建立 SecretKey (HS256)
-    private static final String SECRET = "yourSecretKey123yourSecretKey123"; // 建議長度 >= 256 bits (32 bytes)
+    // 從環境變數讀取 JWT_SECRET
+    private static final String SECRET = System.getenv("JWT_SECRET");
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
-    private static final long EXPIRATION_TIME = 86400000L; // 1 天毫秒
+    private static final long EXPIRATION_TIME = 86400000L; // 1 天 (毫秒)
 
     public static String generateToken(String username) {
         return Jwts.builder()
@@ -36,9 +35,7 @@ public class JwtUtil {
                     .getBody()
                     .getSubject();
         } catch (JwtException e) {
-            // token 無效或解析失敗
-            // e.printStackTrace(); // 可加入日誌
-            return null;
+            return null; // token 無效或過期
         }
     }
 
