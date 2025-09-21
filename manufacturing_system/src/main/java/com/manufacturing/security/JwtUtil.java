@@ -12,7 +12,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtil {
 
     // 從環境變數讀取 JWT_SECRET
-    private static final String SECRET = System.getenv("JWT_SECRET");
+    private static final String SECRET = System.getenv("JWT_SECRET");// 建議長度 >= 256 bits (32 bytes)
     private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
     private static final long EXPIRATION_TIME = 86400000L; // 1 天 (毫秒)
