@@ -1,30 +1,24 @@
 package com.manufacturing.service;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.SendEmailRequest;
+import com.resend.services.emails.model.SendEmailResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final Resend resend;
+
+    // 讀取 application.properties 裡的 API Key
+    public EmailService(@Value("${RESEND_API_KEY}") String apiKey) {
+        this.resend = new Resend(apiKey);
+    }
 
     public void sendResetPasswordEmail(String toEmail, String resetUrl) {
         try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            
-            // 第二個參數 true 代表這是 multipart (支援 HTML)
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-
-            helper.setFrom("no-reply@yourapp.com"); // ✅ 寄件人 (要在 SendGrid 驗證過)
-            helper.setTo(toEmail);
-            helper.setSubject("重設您的密碼");
-
-            // HTML 內容
             String htmlContent = """
                     <div style="font-family: Arial, sans-serif; line-height: 1.6;">
                         <h2>🔐 重設密碼通知</h2>
@@ -43,11 +37,18 @@ public class EmailService {
                     </div>
                     """.formatted(resetUrl);
 
-            helper.setText(htmlContent, true); // 第二個參數 true = HTML
+            SendEmailRequest params = SendEmailRequest.builder()
+                    .from("智慧訂單管理系統 <no-reply@yourdomain.com>") // ✅ 需在 Resend 驗證過的網域
+                    .to(toEmail)
+                    .subject("重設您的密碼")
+                    .html(htmlContent)
+                    .build();
 
-            mailSender.send(mimeMessage);
+            SendEmailResponse data = resend.emails().send(params);
 
-        } catch (MessagingException e) {
+            System.out.println("📧 郵件已送出, ID: " + data.getId());
+
+        } catch (ResendException e) {
             throw new RuntimeException("寄送郵件失敗: " + e.getMessage(), e);
         }
     }
