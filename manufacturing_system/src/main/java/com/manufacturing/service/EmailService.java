@@ -10,20 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    private final String apiKey;
-    private Resend resend; // 延遲初始化
+    @Value("${resend.api.key:}")  // 如果沒設定，會是空字串
+    private String apiKey;
 
-    public EmailService(@Value("${resend.api.key:}") String apiKey) {
-        this.apiKey = apiKey;
-        System.out.println("📌 [EmailService] 初始化，RESEND_API_KEY 長度: " 
-                           + (apiKey != null ? apiKey.length() : 0));
-    }
+    private Resend resend;
 
+    /**
+     * 延遲初始化 Resend
+     */
     private Resend getResend() {
         if (resend == null) {
             if (apiKey == null || apiKey.isBlank()) {
                 throw new IllegalStateException(
-                        "❌ Resend API Key 未設定，請檢查環境變數 RESEND_API_KEY 或 application.properties"
+                        "❌ Resend API Key 未設定，請先在環境變數或 application.properties 設定 RESEND_API_KEY"
                 );
             }
             resend = new Resend(apiKey);
@@ -31,6 +30,10 @@ public class EmailService {
         return resend;
     }
 
+    /**
+     * 寄送重設密碼信件
+     * 如果沒設定 API Key，會在這裡丟例外，而不是在 Spring 啟動時 crash
+     */
     public void sendResetPasswordEmail(String toEmail, String resetUrl) {
         String htmlContent = """
                 <div style="font-family: Arial, sans-serif; line-height: 1.6;">
@@ -61,7 +64,7 @@ public class EmailService {
             CreateEmailResponse data = getResend().emails().send(params);
             System.out.println("📧 郵件已送出, ID: " + data.getId());
         } catch (ResendException e) {
-            throw new RuntimeException("寄送郵件失敗: " + e.getMessage(), e);
+            throw new RuntimeException("寄送郵件失敗", e);
         }
     }
 }
