@@ -13,7 +13,7 @@ public class EmailService {
     private final Resend resend;
 
     // 讀取 application.properties 裡的 API Key
-    public EmailService(@Value("${resend.api.key}") String apiKey) {
+    public EmailService(@Value("${RESEND_API_KEY}") String apiKey) {
         this.resend = new Resend(apiKey);
     }
 
