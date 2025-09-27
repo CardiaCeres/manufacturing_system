@@ -47,7 +47,7 @@ public class SecurityConfig {
         "/", "/index.html", "/favicon.ico",
         "/static/**", "/assets/**", "/js/**", "/css/**", "/img/**", "/fonts/**", // 所有非靜態資源的路徑
         "/api/login", "/api/register", "/api/chat", "/api/forgot-password", "/api/reset-password",
-    "/login", "/register", "/orders", "/forgot-password", "/reset-password"
+    "/login", "/register", "/orders", "/reset-password"
     ).permitAll()
                 .anyRequest().authenticated()
             )
@@ -74,7 +74,7 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true); // 允許攜帶憑證（cookie等）
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/api/**", configuration);
         return source;
     }
 
