@@ -47,7 +47,7 @@ public class SecurityConfig {
         "/", "/index.html", "/favicon.ico",
         "/static/**", "/assets/**", "/js/**", "/css/**", "/img/**", "/fonts/**", // 所有非靜態資源的路徑
         "/api/login", "/api/register","/api/chat","/api/forgot-password",
-    "/login", "/register", "/orders"
+    "/login", "/register", "/orders","/forgot-password"
     ).permitAll()
                 .anyRequest().authenticated()
             )
