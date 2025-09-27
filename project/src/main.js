@@ -7,9 +7,13 @@ axios.defaults.baseURL = 'https://manufacturing-system-latest.onrender.com/api'
 
 axios.interceptors.request.use(
   config => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`
+    const publicPaths = ['/login', '/register', '/forgot-password', '/reset-password']
+    const isPublic = publicPaths.some(path => config.url.includes(path))
+    if (!isPublic) {
+      const token = localStorage.getItem('token')
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`
+      }
     }
     return config
   },
