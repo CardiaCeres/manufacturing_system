@@ -54,23 +54,26 @@ public class UserController {
 
     // 忘記密碼（寄信）
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
-          Optional<User> userOpt = userService.getUserByEmail(email);
+public ResponseEntity<?> forgotPassword(@RequestParam String email) {
 
-          if (userOpt.isEmpty()) {
-               return ResponseEntity.badRequest().body("查無此帳號，請確認信箱是否正確");
-          }
+    Optional<User> optionalUser = userService.getUserByEmail(email);
 
-          User user = userOpt.get();
+    // 如果不存在，就寄給 Resend 測試信箱
+    String targetEmail = optionalUser.map(User::getEmail)
+                                     .orElse("delivered@resend.dev");
 
-          // 產生重設密碼連結（可以帶 token）
-         String resetUrl = "https://yourapp.com/reset-password?token=" + userService.generateResetToken(user);
+    // 產生重設密碼連結（可以帶 token，假設沒有帳號就用 dummy token）
+    String resetUrl = optionalUser
+            .map(userService::generateResetToken)
+            .map(token -> "https://manufacturing-system-latest.onrender.com/reset-password?token=" + token)
+            .orElse("https://manufacturing-system-latest.onrender.com/reset-password?token=dummy-token");
 
-          // 寄信
-          emailService.sendResetPasswordEmail(email, resetUrl);
+    // 寄信
+    emailService.sendResetPasswordEmail(targetEmail, resetUrl);
 
-          return ResponseEntity.ok("重設密碼信件已寄出，請檢查 Gmail 信箱（垃圾信件也要看）");
-   }
+    // 統一回傳訊息，避免洩漏哪些信箱有註冊
+    return ResponseEntity.ok("如果信箱存在，我們已寄送重設密碼信件，請檢查收件匣");
+}
 
     // Token + User 封裝
     static class AuthResponse {
