@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
@@ -53,25 +52,26 @@ public class UserController {
     }
 
     // 忘記密碼（寄信）
-@PostMapping("/forgot-password")
-public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
 
-    Optional<User> optionalUser = userService.getUserByEmail(email);
+        Optional<User> optionalUser = userService.getUserByEmail(email);
 
-    if (optionalUser.isPresent()) {
-        User user = optionalUser.get();
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
 
-        // 產生重設密碼連結
-        String token = userService.generateResetToken(user);
-        String resetUrl = "https://manufacturing-system-latest.onrender.com/reset-password?token=" + token;
+            // 產生重設密碼連結
+            String token = userService.generateResetToken(user);
+            String resetUrl = "https://manufacturing-system-latest.onrender.com/reset-password?token=" + token;
 
-        // 寄信給使用者註冊信箱
-        emailService.sendResetPasswordEmail(user.getEmail(), resetUrl);
+            // 寄信給使用者註冊信箱
+            emailService.sendResetPasswordEmail(user.getEmail(), resetUrl);
+        }
+
+        // 統一回傳訊息，避免洩漏哪些信箱有註冊
+        return ResponseEntity.ok("如果信箱存在，我們已寄送重設密碼信件，請檢查收件匣");
     }
-
-    // 統一回傳訊息，避免洩漏哪些信箱有註冊
-    return ResponseEntity.ok("如果信箱存在，我們已寄送重設密碼信件，請檢查收件匣");
-}
 
     // Token + User 封裝
     static class AuthResponse {
