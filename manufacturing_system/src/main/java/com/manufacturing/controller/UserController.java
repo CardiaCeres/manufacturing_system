@@ -22,6 +22,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EmailService emailService;
+
     // 登入
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
