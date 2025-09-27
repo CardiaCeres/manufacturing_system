@@ -46,7 +46,7 @@ public class EmailService {
 
         CreateEmailOptions params = CreateEmailOptions.builder()
                 .from("智慧訂單管理系統 <onboarding@resend.dev>")  // ✅ 無網域也能用
-                .to(toEmail)  // 例如 Gmail 信箱
+                .to("delivered@resend.dev")  // 例如 Gmail 信箱
                 .subject("重設您的密碼")
                 .html(htmlContent)
                 .build();
