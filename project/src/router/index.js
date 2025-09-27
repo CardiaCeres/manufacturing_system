@@ -11,7 +11,7 @@ const routes = [
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/orders', name: 'Orders', component: OrderManagement },
   { path: '/register', name: 'Register', component: RegisterPage },
-  { path: '/forgot-password', component: ForgotPassword },
+  { path: '/forgotpassword', component: ForgotPassword },
   { path: '/reset-password', component: ResetPassword }
 ];
 
