@@ -53,13 +53,14 @@ public class UserController {
     }
 
     // 忘記密碼（寄信）
-    @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
+@PostMapping("/forgot-password")
+public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
+    String email = request.get("email");
 
-        Optional<User> optionalUser = userService.getUserByEmail(email);
+    Optional<User> optionalUser = userService.getUserByEmail(email);
 
-        if (optionalUser.isPresent()) {
+    if (optionalUser.isPresent()) {
+        try {
             User user = optionalUser.get();
 
             // 產生重設密碼連結
@@ -68,11 +69,20 @@ public class UserController {
 
             // 寄信給使用者註冊信箱
             emailService.sendResetPasswordEmail(user.getEmail(), resetUrl);
-        }
 
-        // 統一回傳訊息，避免洩漏哪些信箱有註冊
-        return ResponseEntity.ok("如果信箱存在，我們已寄送重設密碼信件，請檢查收件匣");
+            // 信箱存在且寄信成功
+            return ResponseEntity.ok(Map.of("message", "寄送成功"));
+        } catch (Exception e) {
+            // 信箱存在但寄信失敗
+            return ResponseEntity.status(500).body(Map.of(
+                    "message", "寄信失敗：" + e.getMessage()
+            ));
+        }
+    } else {
+        // 信箱不存在，無法寄信
+        return ResponseEntity.status(400).body(Map.of("message", "寄送失敗：無法寄信"));
     }
+}
 
     // Token + User 封裝
     static class AuthResponse {
