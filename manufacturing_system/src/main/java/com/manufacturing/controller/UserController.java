@@ -53,7 +53,7 @@ public class UserController {
     }
 
     // 忘記密碼（寄信）
-@PostMapping("/forgotpassword")
+@PostMapping("/forgot-password")
 public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
     String email = request.get("email");
 
