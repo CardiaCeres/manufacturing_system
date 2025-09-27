@@ -54,19 +54,22 @@ public class UserController {
     // 忘記密碼（寄信）
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestParam String email) {
-        User user = userService.getUserByEmail(email);
-        if (user == null) {
-            return ResponseEntity.badRequest().body("查無此帳號，請確認信箱是否正確");
-        }
+          Optional<User> userOpt = userService.getUserByEmail(email);
 
-        // 產生重設密碼連結（可以帶 token）
-        String resetUrl = "https://yourapp.com/reset-password?token=" + userService.generateResetToken(user);
+          if (userOpt.isEmpty()) {
+               return ResponseEntity.badRequest().body("查無此帳號，請確認信箱是否正確");
+          }
 
-        // 寄信
-        emailService.sendResetPasswordEmail(email, resetUrl);
+          User user = userOpt.get();
 
-        return ResponseEntity.ok("重設密碼信件已寄出，請檢查 Gmail 信箱（垃圾信件也要看）");
-    }
+          // 產生重設密碼連結（可以帶 token）
+         String resetUrl = "https://yourapp.com/reset-password?token=" + userService.generateResetToken(user);
+
+          // 寄信
+          emailService.sendResetPasswordEmail(email, resetUrl);
+
+          return ResponseEntity.ok("重設密碼信件已寄出，請檢查 Gmail 信箱（垃圾信件也要看）");
+   }
 
     // Token + User 封裝
     static class AuthResponse {
