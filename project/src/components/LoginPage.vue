@@ -76,7 +76,7 @@ export default {
       this.$router.push("/register");
     },
     goToForgot() {
-      this.$router.push("/forgot-password");
+      this.$router.push("/forgotpassword");
     },
     goToHome() {
       this.$router.push("/");
