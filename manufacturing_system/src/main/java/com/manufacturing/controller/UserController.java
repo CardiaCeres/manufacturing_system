@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.manufacturing.model.User;
 import com.manufacturing.security.JwtUtil;
+import com.manufacturing.service.EmailService;
 import com.manufacturing.service.UserService;
 
 @RestController
