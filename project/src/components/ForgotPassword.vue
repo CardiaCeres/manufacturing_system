@@ -30,19 +30,21 @@ export default {
     };
   },
   methods: {
-    async submitEmail() {
-      try {
-        await axios.post("/forgot-password", { email: this.email });
-        this.message = "已寄送重設密碼連結到您的信箱。";
-      } catch (err) {
-        this.message = "寄送失敗，請確認信箱是否正確。";
-      }
-    },
-    goBack() {
-      this.$router.push("/login");
+  async submitEmail() {
+    try {
+      await axios.post("/forgot-password", 
+        { email: this.email },
+        { headers: { Authorization: "" } }
+      );
+      this.message = "已寄送重設密碼連結到您的信箱。";
+    } catch (err) {
+      this.message = err.response?.data?.message || "寄送失敗，請確認信箱是否正確。";
     }
+  },
+  goBack() {
+    this.$router.push("/login");
   }
-};
+}
 </script>
 
 <style scoped>
