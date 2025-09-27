@@ -32,7 +32,7 @@ export default {
   methods: {
   async submitEmail() {
     try {
-      await axios.post("/api/forgot-password", { email: this.email },
+      await axios.post("/forgot-password", { email: this.email },
       );
       this.message = "已寄送重設密碼連結到您的信箱。";
     } catch (err) {
