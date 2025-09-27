@@ -74,7 +74,7 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true); // 允許攜帶憑證（cookie等）
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
