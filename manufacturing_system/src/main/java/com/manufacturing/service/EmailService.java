@@ -10,11 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    private final Resend resend;
+    @Value("${RESEND_API_KEY:}")  // 沒設定也能啟動
+    private String apiKey;
 
-    // 讀取 application.properties 裡的 API Key
-    public EmailService(@Value("${resend.api.key}") String apiKey) {
-        this.resend = new Resend(apiKey);
+    private Resend resend;
+
+    private Resend getResend() {
+        if (resend == null) {
+            if (apiKey == null || apiKey.isBlank()) {
+                throw new IllegalStateException("❌ Resend API Key 未設定");
+            }
+            resend = new Resend(apiKey);
+        }
+        return resend;
     }
 
     public void sendResetPasswordEmail(String toEmail, String resetUrl) {
@@ -37,17 +45,17 @@ public class EmailService {
                 """.formatted(resetUrl);
 
         CreateEmailOptions params = CreateEmailOptions.builder()
-                .from("智慧訂單管理系統 <no-reply@yourdomain.com>") // ✅ 需在 Resend 驗證過的網域
-                .to(toEmail)
+                .from("智慧訂單管理系統 <onboarding@resend.dev>")  // ✅ 無網域也能用
+                .to(toEmail)  // 例如 Gmail 信箱
                 .subject("重設您的密碼")
                 .html(htmlContent)
                 .build();
 
         try {
-            CreateEmailResponse data = resend.emails().send(params);
+            CreateEmailResponse data = getResend().emails().send(params);
             System.out.println("📧 郵件已送出, ID: " + data.getId());
         } catch (ResendException e) {
-            throw new RuntimeException("寄送郵件失敗: " + e.getMessage(), e);
+            System.err.println("❌ 郵件寄送失敗: " + e.getMessage());
         }
     }
 }
