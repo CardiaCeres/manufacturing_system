@@ -18,8 +18,6 @@ public class EmailService {
     }
 
     public void sendResetPasswordEmail(String toEmail, String resetUrl) {
-        // 測試模式: 強制使用 Resend 提供的測試收件人
-        String testRecipient = "delivered@resend.dev";
 
         String htmlContent = """
                 <div style="font-family: Arial, sans-serif; line-height: 1.6;">
@@ -40,17 +38,17 @@ public class EmailService {
                 """.formatted(resetUrl);
 
         CreateEmailOptions params = CreateEmailOptions.builder()
-                .from("Acme <onboarding@resend.dev>") // 測試用寄件人
-                .to(testRecipient)                     // 測試用收件人
+                .from("Acme <onboarding@resend.dev>") // 寄件人
+                .to(toEmail)                          // 使用者註冊信箱
                 .subject("重設您的密碼")
                 .html(htmlContent)
                 .build();
 
         try {
             CreateEmailResponse data = resend.emails().send(params);
-            System.out.println("📧 測試郵件已送出, ID: " + data.getId());
+            System.out.println("📧 郵件已送出, ID: " + data.getId());
         } catch (ResendException e) {
-            throw new RuntimeException("寄送測試郵件失敗: " + e.getMessage(), e);
+            throw new RuntimeException("寄送郵件失敗: " + e.getMessage(), e);
         }
     }
 }
