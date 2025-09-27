@@ -53,23 +53,21 @@ public class UserController {
     }
 
     // 忘記密碼（寄信）
-    @PostMapping("/forgot-password")
+@PostMapping("/forgot-password")
 public ResponseEntity<?> forgotPassword(@RequestParam String email) {
 
     Optional<User> optionalUser = userService.getUserByEmail(email);
 
-    // 如果不存在，就寄給 Resend 測試信箱
-    String targetEmail = optionalUser.map(User::getEmail)
-                                     .orElse("delivered@resend.dev");
+    if (optionalUser.isPresent()) {
+        User user = optionalUser.get();
 
-    // 產生重設密碼連結（可以帶 token，假設沒有帳號就用 dummy token）
-    String resetUrl = optionalUser
-            .map(userService::generateResetToken)
-            .map(token -> "https://manufacturing-system-latest.onrender.com/reset-password?token=" + token)
-            .orElse("https://manufacturing-system-latest.onrender.com/reset-password?token=dummy-token");
+        // 產生重設密碼連結
+        String token = userService.generateResetToken(user);
+        String resetUrl = "https://manufacturing-system-latest.onrender.com/reset-password?token=" + token;
 
-    // 寄信
-    emailService.sendResetPasswordEmail(targetEmail, resetUrl);
+        // 寄信給使用者註冊信箱
+        emailService.sendResetPasswordEmail(user.getEmail(), resetUrl);
+    }
 
     // 統一回傳訊息，避免洩漏哪些信箱有註冊
     return ResponseEntity.ok("如果信箱存在，我們已寄送重設密碼信件，請檢查收件匣");
