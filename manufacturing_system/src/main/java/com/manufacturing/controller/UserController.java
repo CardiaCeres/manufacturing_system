@@ -75,7 +75,7 @@ public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request
         } catch (Exception e) {
             // 信箱存在但寄信失敗
             return ResponseEntity.status(500).body(Map.of(
-                    "message", "寄信失敗
+                    "message", "寄信失敗"
               ));
         }
     } else {
