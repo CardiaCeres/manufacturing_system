@@ -20,6 +20,9 @@ public class User {
     private String password;
     private String email;
 
+    // 權限角色: ADMIN / MANAGER / USER
+    private String role = "USER";  
+
     // 重設密碼用
     private String resetToken;
     private LocalDateTime tokenExpiry;
@@ -55,6 +58,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getResetToken() {
