@@ -22,6 +22,7 @@ public class User {
 
     // 權限角色: ADMIN / MANAGER / USER
     private String role = "USER";  
+    private String department;      // 所屬部門
 
     // 重設密碼用
     private String resetToken;
@@ -83,4 +84,13 @@ public class User {
     public void setTokenExpiry(LocalDateTime tokenExpiry) {
         this.tokenExpiry = tokenExpiry;
     }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) { 
+this.department = department; }
+    }
+
 }
