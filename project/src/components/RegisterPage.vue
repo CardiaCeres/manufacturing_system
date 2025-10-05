@@ -18,6 +18,14 @@
         </div>
 
         <input v-model="email" type="email" placeholder="📧 電子信箱" required />
+        <select v-model="department" required>
+           <option disabled value="">🏢 選擇部門</option>
+           <option>管理部</option>
+           <option>資訊部</option>
+           <option>業務部</option>
+           <option>行銷部</option>
+           <option>工程部</option>
+         </select>
         <button type="submit">註冊</button>
 
         <p v-if="error" class="error">{{ error }}</p>
@@ -40,6 +48,7 @@ export default {
       username: "",
       password: "",
       email: "",
+      department: "",
       showPassword: false,
       error: "",
       success: "",
@@ -54,6 +63,7 @@ export default {
           username: this.username,
           password: this.password,
           email: this.email
+          department: this.department
         });
         this.success = "🎉 註冊成功，即將導向登入畫面";
         this.error = "";
