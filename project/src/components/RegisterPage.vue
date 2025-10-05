@@ -3,10 +3,8 @@
     <div class="register-card">
       <h2>📝立即註冊</h2>
       <form @submit.prevent="register" class="register-form">
-        <!-- 使用者名稱 -->
         <input v-model="username" placeholder="👤 使用者名稱" required />
 
-        <!-- 密碼 -->
         <div class="password-field">
           <input
             :type="showPassword ? 'text' : 'password'"
@@ -14,13 +12,13 @@
             placeholder="🔒 密碼"
             required
           />
-          <span class="toggle-eye" @click="togglePassword">👁️</span>
+          <span class="toggle-eye" @click="togglePassword">
+            👁️
+          </span>
         </div>
 
-        <!-- 電子信箱 -->
         <input v-model="email" type="email" placeholder="📧 電子信箱" required />
 
-        <!-- 部門下拉選單 -->
         <div class="select-wrapper">
           <select v-model="department" required>
             <option disabled value="">🏢 選擇部門</option>
@@ -36,15 +34,11 @@
           </svg>
         </div>
 
-        <!-- 註冊按鈕 -->
         <button type="submit">註冊</button>
 
-        <!-- 訊息提示 -->
         <p v-if="error" class="error">{{ error }}</p>
         <p v-if="success" class="success">{{ success }}</p>
       </form>
-
-      <!-- 連結登入 -->
       <p class="login-link">
         已有帳號？<a @click="goToLogin">立即登入</a>
       </p>
@@ -130,6 +124,11 @@ export default {
   font-weight: bold;
 }
 
+.icon {
+  font-size: 28px;
+  margin-right: 8px;
+}
+
 .register-form input {
   display: block;
   width: 100%;
@@ -164,6 +163,24 @@ export default {
   color: #777;
 }
 
+.register-form button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: #4CAF50;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.register-form button:hover {
+  background: #43a047;
+}
+
 .select-wrapper {
   position: relative;
 }
@@ -190,24 +207,6 @@ export default {
   height: 20px;
   pointer-events: none;
   transform: translateY(-50%);
-}
-
-.register-form button {
-  width: 100%;
-  margin-top: 20px;
-  padding: 12px;
-  background: #4CAF50;
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.register-form button:hover {
-  background: #43a047;
 }
 
 .error {
@@ -246,3 +245,5 @@ export default {
   }
 }
 </style>
+   
+   
