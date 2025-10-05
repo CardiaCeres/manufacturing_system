@@ -59,6 +59,7 @@ export default {
         });
 
         const token = response.data.token;
+        const user = response.data.user;// 後端回傳完整使用者物件
         const role = response.data.role; // 後端必須回傳 role
 
         localStorage.setItem("token", token);
