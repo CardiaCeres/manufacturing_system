@@ -18,13 +18,6 @@
         </div>
 
         <input v-model="email" type="email" placeholder="📧 電子信箱" required />
-
-        <!-- 新增角色選擇 -->
-        <select v-model="role" required>
-          <option value="USER">一般使用者</option>
-          <option value="ADMIN">管理員</option>
-        </select>
-
         <button type="submit">註冊</button>
 
         <p v-if="error" class="error">{{ error }}</p>
@@ -47,7 +40,6 @@ export default {
       username: "",
       password: "",
       email: "",
-      role: "USER",          // 預設一般使用者
       showPassword: false,
       error: "",
       success: "",
@@ -61,8 +53,7 @@ export default {
         await axios.post('/register', {
           username: this.username,
           password: this.password,
-          email: this.email,
-          role: this.role   // 將角色一起傳到後端
+          email: this.email
         });
         this.success = "🎉 註冊成功，即將導向登入畫面";
         this.error = "";
@@ -170,23 +161,6 @@ export default {
 
 .register-form button:hover {
   background: #43a047;
-}
-
-.register-form select {
-  display: block;
-  width: 100%;
-  margin: 12px 0;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  font-size: 16px;
-  background: #f9f9f9;
-}
-
-.register-form select:focus {
-  outline: none;
-  border-color: #66a6ff;
-  background: #fff;
 }
 
 .error {
