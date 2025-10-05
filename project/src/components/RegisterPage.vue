@@ -174,29 +174,13 @@ export default {
 }
 
 .register-form select {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  margin: 12px 0;
-  padding: 12px;
   padding-right: 40px; /* 預留箭頭空間 */
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 16px;
-  background-color: #f9f9f9;
-  background-image: url('/arrow-down.svg'); /* 美化箭頭 */
+  background-image: url('/arrow-down.svg'); /* 自訂箭頭 */
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 20px;
-  transition: 0.3s;
-  appearance: none; /* 移除預設箭頭 */
+  appearance: none;
   cursor: pointer;
-}
-
-.register-form select:focus {
-  outline: none;
-  border-color: #66a6ff;
-  background-color: #fff;
 }
 
 .error {
