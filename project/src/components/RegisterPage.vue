@@ -62,7 +62,7 @@ export default {
         await axios.post('/register', {
           username: this.username,
           password: this.password,
-          email: this.email
+          email: this.email,
           department: this.department
         });
         this.success = "🎉 註冊成功，即將導向登入畫面";
