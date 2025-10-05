@@ -62,6 +62,7 @@ export default {
         const role = response.data.role; // 後端必須回傳 role
 
         localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("role", role);
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
