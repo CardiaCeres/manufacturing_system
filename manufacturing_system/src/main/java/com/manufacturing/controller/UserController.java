@@ -20,6 +20,9 @@ import com.manufacturing.service.UserService;
 @RequestMapping("/api")
 public class UserController {
 
+   @Value("${FRONTEND_URL}")
+    private String frontendUrl;
+
     @Autowired
     private UserService userService;
 
