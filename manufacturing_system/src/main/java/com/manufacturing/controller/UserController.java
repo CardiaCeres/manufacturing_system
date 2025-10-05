@@ -65,7 +65,7 @@ public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request
 
             // 產生重設密碼連結
             String token = userService.generateResetToken(user);
-            String resetUrl = "https://manufacturing-system-latest.onrender.com/reset-password?token=" + token;
+            String resetUrl = frontendUrl + "/reset-password?token=" + token;
 
             // 寄信給使用者註冊信箱
             emailService.sendResetPasswordEmail(user.getEmail(), resetUrl);
