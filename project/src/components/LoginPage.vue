@@ -59,12 +59,19 @@ export default {
         });
 
         const token = response.data.token;
-        const user = response.data.user;
+        const role = response.data.role; // 後端必須回傳 role
 
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("role", role);
+
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        this.$router.push("/orders");
+
+        // 根據角色導向頁面
+        if (role === "ADMIN") {
+          this.$router.push("/admin");
+        } else {
+          this.$router.push("/orders");
+        }
       } catch (err) {
         this.error = "登入失敗，請確認帳號與密碼是否正確。";
       }
