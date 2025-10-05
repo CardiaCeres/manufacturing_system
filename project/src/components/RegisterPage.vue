@@ -18,14 +18,22 @@
         </div>
 
         <input v-model="email" type="email" placeholder="📧 電子信箱" required />
-        <select v-model="department" required>
-           <option disabled value="">🏢 選擇部門</option>
-           <option>管理部</option>
-           <option>資訊部</option>
-           <option>業務部</option>
-           <option>行銷部</option>
-           <option>工程部</option>
-         </select>
+
+        <div class="select-wrapper">
+          <select v-model="department" required>
+            <option disabled value="">🏢 選擇部門</option>
+            <option>管理部</option>
+            <option>資訊部</option>
+            <option>業務部</option>
+            <option>行銷部</option>
+            <option>工程部</option>
+          </select>
+          <!-- inline SVG 箭頭 -->
+          <svg class="select-arrow" viewBox="0 0 24 24">
+            <path d="M7 10l5 5 5-5H7z" fill="#777"/>
+          </svg>
+        </div>
+
         <button type="submit">註冊</button>
 
         <p v-if="error" class="error">{{ error }}</p>
@@ -173,14 +181,32 @@ export default {
   background: #43a047;
 }
 
+.select-wrapper {
+  position: relative;
+}
+
 .register-form select {
-  padding-right: 40px; /* 預留箭頭空間 */
-  background-image: url('/arrow-down.svg'); /* 自訂箭頭 */
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 20px;
-  appearance: none;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  appearance: none; /* 移除預設箭頭 */
   cursor: pointer;
+}
+
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .error {
