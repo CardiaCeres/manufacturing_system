@@ -148,6 +148,7 @@ export default {
   background: #fff;
 }
 
+/* 密碼欄眼睛 */
 .password-field {
   position: relative;
 }
@@ -163,6 +164,7 @@ export default {
   color: #777;
 }
 
+/* 按鈕 */
 .register-form button {
   width: 100%;
   margin-top: 20px;
@@ -181,6 +183,7 @@ export default {
   background: #43a047;
 }
 
+/* 下拉選單 */
 .select-wrapper {
   position: relative;
 }
@@ -194,9 +197,17 @@ export default {
   border: 1px solid #ddd;
   border-radius: 10px;
   font-size: 16px;
+  color: #555;
   background-color: #f9f9f9;
   appearance: none; /* 移除預設箭頭 */
   cursor: pointer;
+}
+
+.register-form select:focus {
+  outline: none;
+  border-color: #66a6ff;
+  background: #fff;
+  color: #333;
 }
 
 .select-arrow {
