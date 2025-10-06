@@ -21,7 +21,7 @@
 
         <div class="select-wrapper">
           <select v-model="department" required>
-            <option disabled value="">🏢 選擇部門</option>
+            <option value="">🏢 選擇部門</option>
             <option>管理部</option>
             <option>資訊部</option>
             <option>業務部</option>
@@ -194,9 +194,22 @@ export default {
   border: 1px solid #ddd;
   border-radius: 10px;
   font-size: 16px;
-  background-color: #f9f9f9;
-  appearance: none; /* 移除預設箭頭 */
+  background: #f9f9f9;
+  color: #555;                /* 👈 跟 username 輸入框一樣淡的灰色 */
+  transition: 0.3s;
+  padding-right: 40px;        /* 預留箭頭空間 */
+  background-image: url('/arrow-down.svg'); /* 自訂箭頭 */
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  appearance: none;
   cursor: pointer;
+}
+
+.register-form select:focus {
+  outline: none;
+  border-color: #66a6ff;      /* 聚焦時淡藍色邊框 */
+  background: #fff;           /* 聚焦時白底 */
 }
 
 .select-arrow {
