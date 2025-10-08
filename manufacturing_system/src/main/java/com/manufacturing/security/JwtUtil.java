@@ -82,3 +82,17 @@ public class JwtUtil {
                 .getBody();
     }
 }
+
+     public static boolean isTokenExpired(String token) {
+        try {
+            Date expiration = Jwts.parserBuilder()
+                    .setSigningKey(SECRET_KEY)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getExpiration();
+            return expiration.before(new Date());
+        } catch (JwtException e) {
+            return true;
+        }
+    }
