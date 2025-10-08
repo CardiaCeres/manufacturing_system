@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.manufacturing.model.Order;
+import com.manufacturing.model.User;
 import com.manufacturing.repository.OrderRepository;
 
 @Service
@@ -15,8 +16,15 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public List<Order> getOrdersByUserId(Long userId) {
-        return orderRepository.findByUserIdOrderByOrderNumberAsc(userId);
+    // 根據使用者角色與部門回傳訂單
+    public List<Order> getOrdersForUser(User user) {
+        if ("MANAGER".equals(user.getRole())) {
+            // 經理 → 只看到自己部門的訂單
+            return orderRepository.findByDepartmentOrderByOrderNumberAsc(user.getDepartment());
+        } else {
+            // 一般使用者 → 只看到自己的訂單
+            return orderRepository.findByUserIdOrderByOrderNumberAsc(user.getId());
+        }
     }
 
     public Order createOrder(Order order) {
@@ -38,14 +46,12 @@ public class OrderService {
             existingOrder.setProductName(order.getProductName());
             existingOrder.setQuantity(order.getQuantity());
             existingOrder.setPrice(order.getPrice());
-            existingOrder.setTotalAmount(order.getTotalAmount());
+            existingOrder.setTotalAmount(existingOrder.getQuantity() * existingOrder.getPrice());
             existingOrder.setStatus(order.getStatus());
             existingOrder.setOrderDate(order.getOrderDate());
-            existingOrder.setTotalAmount(existingOrder.getQuantity() * existingOrder.getPrice());
+            existingOrder.setDepartment(order.getDepartment());
 
             return orderRepository.save(existingOrder);
-
-            
         } else {
             throw new RuntimeException("訂單未找到，無法更新");
         }
