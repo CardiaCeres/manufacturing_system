@@ -75,19 +75,19 @@ public class OrderController {
             User user = userService.getUserByUsername(username);
             if (user == null) return ResponseEntity.status(401).body("無效使用者");
 
-            order.setUserId(user.getId());
+            order.setUserId(user.getId());// 設定使用者 ID
             order.setDepartment(user.getDepartment()); // 自動帶入部門
 
             if (order.getProductName() == null || order.getProductName().isEmpty()) {
-                return ResponseEntity.badRequest().body("產品名稱為必填");
+                return ResponseEntity.badRequest().body("產品名稱為必填");// 驗證必要欄位
             }
 
             if (order.getQuantity() != null && order.getPrice() != null) {
-                order.setTotalAmount(order.getQuantity() * order.getPrice());
+                order.setTotalAmount(order.getQuantity() * order.getPrice());// 計算總金額
             }
 
             if (order.getStatus() == null || order.getStatus().isEmpty()) {
-                order.setStatus("處理中");
+                order.setStatus("處理中");// 預設狀態
             }
 
             Order createdOrder = orderService.createOrder(order);
