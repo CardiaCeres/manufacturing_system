@@ -34,19 +34,32 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
-    // 從 JWT 抽出使用者並取得訂單
+    // 取得訂單（支援角色與部門過濾）
     @GetMapping("/my")
     public ResponseEntity<?> getMyOrders(HttpServletRequest request) {
         try {
             String token = extractTokenFromRequest(request);
+            if (token == null) {
+                return ResponseEntity.status(401).body("未提供 Token");
+            }
+
             String username = JwtUtil.extractUsername(token);
+            String role = JwtUtil.extractRole(token);
+            String department = JwtUtil.extractDepartment(token);
+
             User user = userService.getUserByUsername(username);
             if (user == null) {
                 return ResponseEntity.status(401).body("無效使用者");
             }
 
-            List<Order> orders = orderService.getOrdersByUserId(user.getId());
+            // 將 JWT 資訊同步到 User 物件
+            user.setRole(role);
+            user.setDepartment(department);
+
+            // 呼叫 Service 根據角色回傳訂單
+            List<Order> orders = orderService.getOrdersForUser(user);
             return ResponseEntity.ok(orders);
+
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("伺服器錯誤：" + e.getMessage());
         }
@@ -56,26 +69,23 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody Order order, HttpServletRequest request) {
         try {
             String token = extractTokenFromRequest(request);
+            if (token == null) return ResponseEntity.status(401).body("未提供 Token");
+
             String username = JwtUtil.extractUsername(token);
             User user = userService.getUserByUsername(username);
-            if (user == null) {
-                return ResponseEntity.status(401).body("無效使用者");
-            }
+            if (user == null) return ResponseEntity.status(401).body("無效使用者");
 
-            // 設定使用者 ID
             order.setUserId(user.getId());
+            order.setDepartment(user.getDepartment()); // 自動帶入部門
 
-            // 驗證必要欄位
             if (order.getProductName() == null || order.getProductName().isEmpty()) {
                 return ResponseEntity.badRequest().body("產品名稱為必填");
             }
 
-            // 計算總金額
             if (order.getQuantity() != null && order.getPrice() != null) {
                 order.setTotalAmount(order.getQuantity() * order.getPrice());
             }
 
-            // 預設狀態
             if (order.getStatus() == null || order.getStatus().isEmpty()) {
                 order.setStatus("處理中");
             }
