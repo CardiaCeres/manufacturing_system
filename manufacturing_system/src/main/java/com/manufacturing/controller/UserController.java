@@ -21,7 +21,7 @@ import com.manufacturing.service.UserService;
 @RequestMapping("/api")
 public class UserController {
 
-   @Value("${FRONTEND_URL}")
+    @Value("${FRONTEND_URL}")
     private String frontendUrl;
 
     @Autowired
@@ -36,9 +36,22 @@ public class UserController {
         boolean valid = userService.validateUser(user.getUsername(), user.getPassword());
 
         if (valid) {
-            String token = JwtUtil.generateToken(user.getUsername());
+            User dbUser = userService.getUserByUsername(user.getUsername());
+            if (dbUser == null) {
+                return ResponseEntity.status(401).body("使用者不存在");
+            }
+
+            // 生成 JWT，包含 username、role、department
+            String token = JwtUtil.generateToken(
+                dbUser.getUsername(),
+                Map.of(
+                    "role", dbUser.getRole(),
+                    "department", dbUser.getDepartment()
+                )
+            );
+
             return ResponseEntity.ok().body(
-                    new AuthResponse(token, userService.getUserByUsername(user.getUsername()))
+                    new AuthResponse(token, dbUser)
             );
         } else {
             return ResponseEntity.status(401).body("憑證錯誤，請確認帳號密碼");
@@ -57,36 +70,31 @@ public class UserController {
     }
 
     // 忘記密碼（寄信）
-@PostMapping("/forgot-password")
-public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
-    String email = request.get("email");
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
 
-    Optional<User> optionalUser = userService.getUserByEmail(email);
+        Optional<User> optionalUser = userService.getUserByEmail(email);
 
-    if (optionalUser.isPresent()) {
-        try {
-            User user = optionalUser.get();
+        if (optionalUser.isPresent()) {
+            try {
+                User user = optionalUser.get();
 
-            // 產生重設密碼連結
-            String token = userService.generateResetToken(user);
-            String resetUrl = frontendUrl + "/reset-password?token=" + token;
+                // 產生重設密碼連結
+                String token = userService.generateResetToken(user);
+                String resetUrl = frontendUrl + "/reset-password?token=" + token;
 
-            // 寄信給使用者註冊信箱
-            emailService.sendResetPasswordEmail(user.getEmail(), resetUrl);
+                // 寄信給使用者註冊信箱
+                emailService.sendResetPasswordEmail(user.getEmail(), resetUrl);
 
-            // 信箱存在且寄信成功
-            return ResponseEntity.ok(Map.of("message", "寄送成功"));
-        } catch (Exception e) {
-            // 信箱存在但寄信失敗
-            return ResponseEntity.status(500).body(Map.of(
-                    "message", "寄信失敗"
-              ));
+                return ResponseEntity.ok(Map.of("message", "寄送成功"));
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body(Map.of("message", "寄信失敗"));
+            }
+        } else {
+            return ResponseEntity.status(400).body(Map.of("message", "寄送失敗：無法寄信"));
         }
-    } else {
-        // 信箱不存在，無法寄信
-        return ResponseEntity.status(400).body(Map.of("message", "寄送失敗：無法寄信"));
     }
-}
 
     // Token + User 封裝
     static class AuthResponse {
