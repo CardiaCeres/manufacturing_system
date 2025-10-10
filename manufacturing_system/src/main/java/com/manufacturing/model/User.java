@@ -20,8 +20,8 @@ public class User {
     private String password;
     private String email;
 
-    // 權限角色: ADMIN / MANAGER / USER
-    private String role = "USER";  
+    // 權限角色: Admin / Manager / User
+    private String role = "User";  
     private String department;      // 所屬部門
 
     // 重設密碼用
