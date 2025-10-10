@@ -18,7 +18,7 @@ public class OrderService {
 
     // 根據使用者角色與部門回傳訂單
     public List<Order> getOrdersForUser(User user) {
-        if ("Mamager".equalsIgnoreCase(user.getRole()) || "Admin".equalsIgnoreCase(user.getRole())) {
+        if ("Manager".equalsIgnoreCase(user.getRole()) || "Admin".equalsIgnoreCase(user.getRole())) {
             // 管理者或經理 → 看到自己部門的訂單
             return orderRepository.findByDepartmentOrderByOrderNumberAsc(user.getDepartment());
         } else {
