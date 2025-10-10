@@ -1,7 +1,7 @@
 package com.manufacturing.model;
 
 public enum Role {
-    ROLE_Admin,
-    ROLE_Manager,
-    ROLE_User
+    ROLE_ADMIN,
+    ROLE_MANAGER,
+    ROLE_USER
 }
