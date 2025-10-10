@@ -37,7 +37,7 @@ public class OrderController {
             if (user == null) return ResponseEntity.status(401).body("未授權使用者");
 
             List<Order> orders;
-            if ("Admin".equalsIgnoreCase(user.getRole())) {
+            if ("MANAGER".equalsIgnoreCase(user.getRole())) {
                 // 管理者可看同部門的所有訂單
                 orders = orderService.getOrdersByDepartment(user.getDepartment());
             } else {
