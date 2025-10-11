@@ -25,11 +25,7 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
-    /** 
-     * 取得訂單（依角色過濾）
-     * MANAGER: 可看同部門所有訂單
-     * User: 只能看自己訂單
-     */
+    /** 取得訂單（依角色過濾） */
     @GetMapping("/my")
     public ResponseEntity<?> getMyOrders(HttpServletRequest request) {
         try {
@@ -38,10 +34,8 @@ public class OrderController {
 
             List<Order> orders;
             if ("MANAGER".equalsIgnoreCase(user.getRole())) {
-                // 管理者可看同部門的所有訂單
                 orders = orderService.getOrdersByDepartment(user.getDepartment());
             } else {
-                // 一般使用者只能看自己的
                 orders = orderService.getOrdersByUserId(user.getId());
             }
 
@@ -51,26 +45,22 @@ public class OrderController {
         }
     }
 
-    /** 
-     * 建立訂單
-     * MANAGER: 可為同部門任一成員建立訂單
-     * User: 只能為自己建立
-     */
+    /** 建立訂單 */
     @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody Order order, HttpServletRequest request) {
         try {
             User user = getAuthenticatedUser(request);
             if (user == null) return ResponseEntity.status(401).body("未授權使用者");
 
-                // 一般使用者只能建立自己的訂單
-                order.setUserId(user.getId());
-                order.setDepartment(user.getDepartment());
+            // ✅ 共用驗證方法
+            ResponseEntity<?> validationError = validateOrder(order, true);
+            if (validationError != null) return validationError;
 
-            if (order.getProductName() == null || order.getProductName().isEmpty()) {
-                return ResponseEntity.badRequest().body("產品名稱為必填");
-            }
+            // 一般使用者只能建立自己的訂單
+            order.setUserId(user.getId());
+            order.setDepartment(user.getDepartment());
 
-            if (order.getQuantity() != null && order.getPrice() != null) {
+            if (order.getTotalAmount() == null && order.getQuantity() != null && order.getPrice() != null) {
                 order.setTotalAmount(order.getQuantity() * order.getPrice());
             }
 
@@ -86,11 +76,7 @@ public class OrderController {
         }
     }
 
-    /** 
-     * 更新訂單
-     * MANAGER: 可更新同部門的任意訂單
-     * User: 只能更新自己的訂單
-     */
+    /** 更新訂單 */
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody Order order, HttpServletRequest request) {
         try {
@@ -104,6 +90,19 @@ public class OrderController {
                 return ResponseEntity.status(403).body("無權限修改此訂單");
             }
 
+            // ✅ 共用驗證方法
+            ResponseEntity<?> validationError = validateOrder(order, false);
+            if (validationError != null) return validationError;
+
+            // 保留不可修改欄位
+            order.setId(id);
+            order.setUserId(existingOrder.getUserId());
+            order.setDepartment(existingOrder.getDepartment());
+
+            if (order.getTotalAmount() == null && order.getQuantity() != null && order.getPrice() != null) {
+                order.setTotalAmount(order.getQuantity() * order.getPrice());
+            }
+
             Order updatedOrder = orderService.updateOrder(id, order);
             return ResponseEntity.ok(updatedOrder);
 
@@ -112,11 +111,7 @@ public class OrderController {
         }
     }
 
-    /** 
-     * 刪除訂單
-     * MANAGER: 可刪除同部門訂單
-     * User: 只能刪除自己的
-     */
+    /** 刪除訂單 */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id, HttpServletRequest request) {
         try {
@@ -139,6 +134,23 @@ public class OrderController {
     }
 
     // ---------- Helper Methods ----------
+
+    /** 共用驗證方法 */
+    private ResponseEntity<?> validateOrder(Order order, boolean isCreate) {
+        if (isCreate && (order.getOrderNumber() == null || order.getOrderNumber().isEmpty())) {
+            return ResponseEntity.badRequest().body("訂單編號為必填");
+        }
+        if (order.getProductName() == null || order.getProductName().isEmpty()) {
+            return ResponseEntity.badRequest().body("產品名稱為必填");
+        }
+        if (order.getQuantity() == null || order.getQuantity() <= 0) {
+            return ResponseEntity.badRequest().body("數量必須大於 0");
+        }
+        if (order.getPrice() == null || order.getPrice() < 0) {
+            return ResponseEntity.badRequest().body("價格不可為負數");
+        }
+        return null;
+    }
 
     private User getAuthenticatedUser(HttpServletRequest request) {
         String token = extractTokenFromRequest(request);
