@@ -14,7 +14,7 @@ import com.manufacturing.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-@CrossOrigin(origins = "frontendUrl") // 替換成實際前端 URL
+@CrossOrigin(origins = "frontendUrl")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -25,7 +25,11 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
-    // ---------- 取得訂單 ----------
+    /** 
+     * 取得訂單（依角色過濾）
+     * MANAGER: 可看同部門所有訂單
+     * User: 只能看自己訂單
+     */
     @GetMapping("/my")
     public ResponseEntity<?> getMyOrders(HttpServletRequest request) {
         try {
@@ -34,8 +38,10 @@ public class OrderController {
 
             List<Order> orders;
             if ("MANAGER".equalsIgnoreCase(user.getRole())) {
+                // 管理者可看同部門的所有訂單
                 orders = orderService.getOrdersByDepartment(user.getDepartment());
             } else {
+                // 一般使用者只能看自己的
                 orders = orderService.getOrdersByUserId(user.getId());
             }
 
@@ -45,30 +51,20 @@ public class OrderController {
         }
     }
 
-    // ---------- 建立訂單 ----------
+    /** 
+     * 建立訂單
+     * MANAGER: 可為同部門任一成員建立訂單
+     * User: 只能為自己建立
+     */
     @PostMapping("/create")
     public ResponseEntity<?> createOrder(@RequestBody Order order, HttpServletRequest request) {
         try {
             User user = getAuthenticatedUser(request);
             if (user == null) return ResponseEntity.status(401).body("未授權使用者");
 
-            // 權限控制
-            if ("MANAGER".equalsIgnoreCase(user.getRole())) {
-                // MANAGER 若未指定 userId，預設為自己
-                if (order.getUserId() == null) order.setUserId(user.getId());
-
-                // 從 userId 取得對應的部門，確保在同部門
-                User targetUser = userService.getUserById(order.getUserId());
-                if (targetUser == null || !user.getDepartment().equals(targetUser.getDepartment())) {
-                    return ResponseEntity.status(403).body("只能為同部門成員建立訂單");
-                }
-                order.setDepartment(targetUser.getDepartment());
-
-            } else {
                 // 一般使用者只能建立自己的訂單
                 order.setUserId(user.getId());
                 order.setDepartment(user.getDepartment());
-            }
 
             if (order.getProductName() == null || order.getProductName().isEmpty()) {
                 return ResponseEntity.badRequest().body("產品名稱為必填");
@@ -90,7 +86,11 @@ public class OrderController {
         }
     }
 
-    // ---------- 更新訂單 ----------
+    /** 
+     * 更新訂單
+     * MANAGER: 可更新同部門的任意訂單
+     * User: 只能更新自己的訂單
+     */
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody Order order, HttpServletRequest request) {
         try {
@@ -104,21 +104,6 @@ public class OrderController {
                 return ResponseEntity.status(403).body("無權限修改此訂單");
             }
 
-            // 確保 MANAGER 不會更新到其他部門訂單
-            if ("MANAGER".equalsIgnoreCase(user.getRole())) {
-                order.setDepartment(existingOrder.getDepartment());
-                order.setUserId(existingOrder.getUserId());
-            } else {
-                // 一般使用者只能更新自己的訂單
-                order.setUserId(user.getId());
-                order.setDepartment(user.getDepartment());
-            }
-
-            // 自動計算 TotalAmount
-            if (order.getQuantity() != null && order.getPrice() != null) {
-                order.setTotalAmount(order.getQuantity() * order.getPrice());
-            }
-
             Order updatedOrder = orderService.updateOrder(id, order);
             return ResponseEntity.ok(updatedOrder);
 
@@ -127,7 +112,11 @@ public class OrderController {
         }
     }
 
-    // ---------- 刪除訂單 ----------
+    /** 
+     * 刪除訂單
+     * MANAGER: 可刪除同部門訂單
+     * User: 只能刪除自己的
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id, HttpServletRequest request) {
         try {
@@ -150,6 +139,7 @@ public class OrderController {
     }
 
     // ---------- Helper Methods ----------
+
     private User getAuthenticatedUser(HttpServletRequest request) {
         String token = extractTokenFromRequest(request);
         if (token == null) return null;
