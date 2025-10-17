@@ -34,7 +34,7 @@
 ## 🌐 線上展示（Live Demo）
 
 本系統已完成部署，可透過以下網址體驗實際功能：  
-**線上展示網址**：[https://manufacturing-system-latest.onrender.com](https://manufacturing-system-latest.onrender.com)
+**線上展示網址**：https://manufacturing-system-latest.onrender.com
 
 > 💡 提醒：由於系統部署於 Render 平台，**免費方案會有冷啟動機制**，首次開啟時可能需等待約 2 分鐘才能完整載入，敬請耐心等候。
 
