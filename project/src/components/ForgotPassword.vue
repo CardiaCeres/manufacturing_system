@@ -15,14 +15,20 @@
         <a @click="goBack">返回登入頁</a>
       </p>
     </div>
+    <!-- ✅ 智慧客服聊天視窗 -->
+    <ChatWidget />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import ChatWidget from "@/components/ChatWidget.vue"; // 引入客服元件
 
 export default {
   name: "ForgotPassword",
+  components: {
+    ChatWidget, // 註冊元件
+  },
   data() {
     return {
       email: "",
@@ -132,6 +138,14 @@ export default {
 }
 .back-link a:hover {
   color: #5a67d8;
+}
+
+/* ✅ 固定客服小幫手右下角 */
+:deep(.chat-widget-container) {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
 }
 
 @keyframes fadeIn {
