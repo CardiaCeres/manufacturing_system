@@ -19,6 +19,8 @@ public class EmailService {
 
     public void sendResetPasswordEmail(String toEmail, String resetUrl) {
 
+        String senderEmail = System.getenv("RESET_EMAIL_FROM");
+
         String htmlContent = """
                 <div style="font-family: Arial, sans-serif; line-height: 1.6;">
                     <h2>🔐 重設密碼通知</h2>
@@ -38,7 +40,7 @@ public class EmailService {
                 """.formatted(resetUrl);
 
         CreateEmailOptions params = CreateEmailOptions.builder()
-                .from("Acme <onboarding@resend.dev>") // 寄件人
+                .from(senderEmail) // 寄件人
                 .to(toEmail)                          // 使用者註冊信箱
                 .subject("重設您的密碼")
                 .html(htmlContent)
