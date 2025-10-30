@@ -130,6 +130,11 @@ export default {
   transition: 0.3s;
 }
 
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
 .toggle-eye {
   position: absolute;
   right: 12px;
