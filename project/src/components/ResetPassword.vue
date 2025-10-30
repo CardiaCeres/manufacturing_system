@@ -133,7 +133,7 @@ export default {
 .toggle-eye {
   position: absolute;
   right: 12px;
-  top: 36px;
+  top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   user-select: none;
