@@ -90,7 +90,8 @@ public class User {
     }
 
     public void setDepartment(String department) { 
-this.department = department; }
+        this.department = department; 
     }
+}
 
 
