@@ -10,7 +10,7 @@
           placeholder="輸入新密碼"
           required
         />
-        <span class="toggle-eye" @click="togglePassword">👁️</span>
+        <span class="toggle-eye" @click="togglePassword(1)">👁️</span>
         </div> 
 
         <div class="password-field">
