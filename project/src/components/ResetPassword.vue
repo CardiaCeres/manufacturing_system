@@ -3,19 +3,26 @@
     <div class="reset-box">
       <h2>🔑 重設密碼</h2>
       <form @submit.prevent="submitNewPassword" class="reset-form">
+      <div class="password-field">
         <input
           v-model="password"
-          :type="showPassword ? 'text' : 'password'"
+          :type="showPassword1 ? 'text' : 'password'"
           placeholder="輸入新密碼"
           required
         />
         <span class="toggle-eye" @click="togglePassword">👁️</span>
+        </div> 
+
+        <div class="password-field">
         <input
           v-model="confirmPassword"
-          :type="showPassword ? 'text' : 'password'"
+          :type="showPassword2 ? 'text' : 'password'"
           placeholder="再次輸入新密碼"
           required
         />
+        <span class="toggle-eye" @click="togglePassword(2)">👁️</span>
+        </div>
+
         <button type="submit">重設密碼</button>
       </form>
 
@@ -45,13 +52,15 @@ export default {
     return {
       password: "",
       confirmPassword: "",
-      showPassword: false,
+      sshowPassword1: false,
+      showPassword2: false,
       message: ""
     };
   },
   methods: {
-    togglePassword() {
-      this.showPassword = !this.showPassword;
+    togglePassword(field) {
+      if (field === 1) this.showPassword1 = !this.showPassword1; 
+      if (field === 2) this.showPassword2 = !this.showPassword2;
     },
     goBack() {
       this.$router.push("/login");
