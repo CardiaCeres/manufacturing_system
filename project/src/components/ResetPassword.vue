@@ -34,15 +34,18 @@
         <a @click="goBack">返回登入頁</a>
       </p>
     </div>
+    <ChatWidget />
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
+import ChatWidget from "@/components/ChatWidget.vue";
 
 export default {
   name: "ResetPassword",
+  components: { ChatWidget },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -52,7 +55,7 @@ export default {
     return {
       password: "",
       confirmPassword: "",
-      sshowPassword1: false,
+      showPassword1: false,
       showPassword2: false,
       message: ""
     };
