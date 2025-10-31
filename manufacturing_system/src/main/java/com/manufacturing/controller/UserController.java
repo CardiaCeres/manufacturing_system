@@ -96,6 +96,30 @@ public class UserController {
         }
     }
 
+   // 重設密碼
+   @PostMapping("/reset-password")
+   public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+       String token = request.get("token");
+       String newPassword = request.get("password");
+
+       if (token == null || newPassword == null) {
+           return ResponseEntity.badRequest().body("缺少必要參數");
+       }
+
+       Optional<User> optionalUser = userService.getUserByResetToken(token);
+
+       if (optionalUser.isEmpty()) {
+           return ResponseEntity.status(401).body("Token 無效或已過期");
+       }
+
+       User user = optionalUser.get();
+       user.setPassword(newPassword);
+       user.setResetToken(null); // 清除重設 Token
+       userService.saveUser(user);
+
+       return ResponseEntity.ok("密碼已成功重設，請重新登入");
+   }
+
     // Token + User 封裝
     static class AuthResponse {
         private final String token;
