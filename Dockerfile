@@ -16,7 +16,7 @@ COPY --from=frontend /frontend/dist ./src/main/resources/static
 RUN mvn clean package -DskipTests
 
 # Step 3: Create minimal runtime image
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk-slim
 WORKDIR /app
 
 # 複製 JAR 檔到容器
