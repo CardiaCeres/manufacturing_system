@@ -4,7 +4,7 @@
 FROM node:20-alpine AS frontend
 WORKDIR /frontend
 COPY project/package*.json ./
-RUN npm install --omit=dev
+RUN npm install
 COPY project/ .
 RUN npm run build
 
