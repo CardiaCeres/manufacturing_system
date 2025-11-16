@@ -30,7 +30,7 @@ RUN mvn clean package -DskipTests
 # =======================
 # Step 3: Runtime image
 # =======================
-FROM eclipse-temurin:21-jre-jammy
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # 複製 JAR
@@ -40,6 +40,4 @@ COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
 
 # 優化啟動參數：減少啟動時間與記憶體消耗
-ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-XX:+UseZGC","-jar", "app.jar"]
-
-ENTRYPOINT ["java","-XX:+UseContainerSupport","-XX:MaxRAMPercentage=75.0","-XX:+UseZGC","-XX:TieredStopAtLevel=1","-Dspring.main.lazy-initialization=true","-Dspring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false","-jar","app.jar"]
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
