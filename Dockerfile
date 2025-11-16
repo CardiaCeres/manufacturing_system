@@ -17,4 +17,4 @@ FROM gcr.io/distroless/java17-debian11
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-XX:+UseContainerSupport","-XX:MaxRAMPercentage=75.0","-XX:+UseZGC","-XX:+TieredStopAtLevel=1","-Dspring.main.lazy-initialization=true","-Dspring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false","-jar","app.jar"]
+ENTRYPOINT ["java","-XX:+UseContainerSupport","-XX:MaxRAMPercentage=75.0","-XX:+UseZGC","-XX:TieredStopAtLevel=1","-Dspring.main.lazy-initialization=true","-Dspring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false","-jar","app.jar"]
