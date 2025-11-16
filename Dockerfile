@@ -1,6 +1,3 @@
-# ================================
-# Step 1: Build frontend (Vue)
-# ================================
 FROM node:20 AS frontend
 WORKDIR /frontend
 COPY project/package*.json ./
@@ -8,30 +5,16 @@ RUN npm install
 COPY project/ .
 RUN npm run build
 
-# ================================
-# Step 2: Build backend (Spring Boot)
-# ================================
 FROM maven:3.9.6-eclipse-temurin-21 AS builder
 WORKDIR /app
-
 COPY manufacturing_system/pom.xml .
 RUN mvn dependency:go-offline -B
-
 COPY manufacturing_system/ .
-
 COPY --from=frontend /frontend/dist ./src/main/resources/static
-
 RUN mvn clean package -DskipTests
 
-# ================================
-# Step 3: Runtime - Distroless
-# ================================
-FROM gcr.io/distroless/java21-debian11
-
+FROM gcr.io/distroless/java17-debian11
 WORKDIR /app
-
 COPY --from=builder /app/target/*.jar app.jar
-
 EXPOSE 8080
-
 ENTRYPOINT ["java","-XX:+UseContainerSupport","-XX:MaxRAMPercentage=75.0","-XX:+UseZGC","-XX:+TieredStopAtLevel=1","-Dspring.main.lazy-initialization=true","-Dspring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false","-jar","app.jar"]
