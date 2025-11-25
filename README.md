@@ -1,4 +1,11 @@
 # 🧠 智慧訂單管理系統（Smart Order Management System）
+
+## 🌐 線上展示（Live Demo）
+
+本系統已完成部署，可透過以下網址體驗實際功能：  
+**線上展示網址**：https://manufacturing-system-latest.onrender.com
+
+---
  
 [![Live on Render](https://img.shields.io/badge/render-live-success?logo=render&style=flat)](https://your-app-name.onrender.com)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/yourusername/smart-order-system)
@@ -40,12 +47,6 @@
 
 ---
 
-## 🌐 線上展示（Live Demo）
-
-本系統已完成部署，可透過以下網址體驗實際功能：  
-**線上展示網址**：https://manufacturing-system-latest.onrender.com
-
----
 
 ## 🖼️ 系統架構圖（Architecture）
  
