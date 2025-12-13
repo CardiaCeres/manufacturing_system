@@ -27,7 +27,7 @@ export default {
   methods: {
     async verifyEmail(token) {
       try {
-        const response = await axios.post('/verify-email', { token });
+        const response = await axios.post('/api/verify-email', { token });
         this.success = response.data.message || "Email 驗證成功！";
         this.error = "";
       } catch (err) {
