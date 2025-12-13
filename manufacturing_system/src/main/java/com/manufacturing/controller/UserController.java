@@ -95,19 +95,26 @@ public class UserController {
     /* =========================
        Email 驗證 API
        ========================= */
-    @GetMapping("/verify-email")
-    public ResponseEntity<?> verifyEmail(@RequestParam("token") String token) {
-        Optional<User> optionalUser = userService.getUserByVerifyToken(token);
+    @PostMapping("/verify-email")
+    public ResponseEntity<?> verifyEmail(@RequestBody Map<String, String> request) {
 
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.status(400).body("驗證 Token 無效或已過期");
+          String token = request.get("token");
+
+          if (token == null || token.isBlank()) {
+               return ResponseEntity.badRequest().body("Token 不存在");
+         }
+
+         Optional<User> optionalUser = userService.getUserByVerifyToken(token);
+         if (optionalUser.isEmpty()) {
+              return ResponseEntity.status(400).body("驗證 Token 無效或已過期");
         }
 
         User user = optionalUser.get();
         userService.enableUser(user);
 
         return ResponseEntity.ok("Email 驗證成功，帳號已啟用，請重新登入");
-    }
+   }
+
 
     /* =========================
        忘記密碼（寄信）
