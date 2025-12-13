@@ -19,9 +19,13 @@ public class UserService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    /* =========================
+       基本使用者操作
+       ========================= */
+
     // 儲存新使用者或更新密碼
     public User saveUser(User user) {
-        if (user.getPassword() != null) {
+        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         return userRepository.save(user);
@@ -43,6 +47,43 @@ public class UserService {
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    /* =========================
+       Email 驗證（註冊）
+       ========================= */
+
+    // 產生 Email 驗證 Token
+    public String generateVerifyToken(User user) {
+        String token = UUID.randomUUID().toString();
+        user.setVerifyToken(token);
+        user.setVerifyTokenExpiry(LocalDateTime.now().plusHours(1)); // Token 有效 1 小時，和重設密碼一致
+        userRepository.save(user);
+        return token;
+    }
+
+    // 透過驗證 Token 取得使用者
+    public Optional<User> getUserByVerifyToken(String token) {
+        return userRepository.findByVerifyToken(token);
+    }
+
+    // 驗證 Email Token 是否有效
+    public boolean isVerifyTokenValid(User user, String token) {
+        return token.equals(user.getVerifyToken()) &&
+               user.getVerifyTokenExpiry() != null &&
+               user.getVerifyTokenExpiry().isAfter(LocalDateTime.now());
+    }
+
+    // 啟用帳號（完成 Email 驗證）
+    public void enableUser(User user) {
+        user.setEnabled(true);
+        user.setVerifyToken(null);
+        user.setVerifyTokenExpiry(null);
+        userRepository.save(user);
+    }
+
+    /* =========================
+       忘記密碼
+       ========================= */
 
     // 透過 resetToken 取得使用者
     public Optional<User> getUserByResetToken(String token) {
