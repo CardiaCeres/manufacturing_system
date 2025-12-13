@@ -28,6 +28,11 @@ public class User {
     private String resetToken;
     private LocalDateTime tokenExpiry;
 
+    // Email 驗證用
+    private Boolean enabled = false;          // 帳號是否已完成 Email 驗證
+    private String verifyToken;               // 驗證用 Token
+    private LocalDateTime verifyTokenExpiry;  // 驗證 Token 有效期限
+
     // Getter 和 Setter 方法
     public Long getId() {
         return id;
@@ -92,6 +97,28 @@ public class User {
     public void setDepartment(String department) { 
         this.department = department; 
     }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getVerifyToken() {
+        return verifyToken;
+    }
+
+    public void setVerifyToken(String verifyToken) {
+        this.verifyToken = verifyToken;
+    }
+
+    public LocalDateTime getVerifyTokenExpiry() {
+        return verifyTokenExpiry;
+    }
+
+    public void setVerifyTokenExpiry(LocalDateTime verifyTokenExpiry) {
+        this.verifyTokenExpiry = verifyTokenExpiry;
+    }
 }
-
-
