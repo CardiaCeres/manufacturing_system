@@ -20,6 +20,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 根據 resetToken 查找用戶
     Optional<User> findByResetToken(String resetToken);
 
+    // 根據 verifyToken 查找用戶（Email 驗證）
+    Optional<User> findByVerifyToken(String verifyToken);
+
     // 依角色查找所有使用者
     List<User> findByRole(String role);
 
