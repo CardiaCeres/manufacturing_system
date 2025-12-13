@@ -9,14 +9,17 @@
 
       <button v-if="success" @click="goToLogin">前往登入</button>
     </div>
+    <ChatWidget />
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import ChatWidget from "@/components/ChatWidget.vue";
 
 export default {
   name: "VerifyEmailPage",
+  components: { ChatWidget },
   data() {
     return {
       loading: true,
@@ -57,15 +60,18 @@ export default {
 
 <style scoped>
 .verify-wrapper {
+  position: relative;
+  min-height: 100vh;
+  background-image: url('/public/photo.png');
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: #f5f6fa;
 }
 
 .verify-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
   padding: 40px 30px;
   border-radius: 20px;
   box-shadow: 0 12px 24px rgba(0,0,0,0.15);
@@ -102,3 +108,4 @@ button:hover {
   background-color: #43a047;
 }
 </style>
+
