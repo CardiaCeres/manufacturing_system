@@ -79,11 +79,11 @@ export default {
           email: this.email,
           department: this.department
         });
-        this.success = "🎉 註冊成功，即將導向登入畫面";
+        this.success = "🎉 註冊成功！請前往信箱完成驗證後再登入。";
         this.error = "";
         setTimeout(() => {
           this.$router.push("/login");
-        }, 1500);
+        }, 2000);
       } catch (err) {
         this.error = "⚠️ 註冊失敗，帳號或信箱可能已存在。";
         this.success = "";
