@@ -5,6 +5,7 @@ import RegisterPage from '../components/RegisterPage.vue';
 import HomeView from '../components/HomeView.vue';
 import ForgotPassword from '../components/ForgotPassword.vue'
 import ResetPassword from '../components/ResetPassword.vue'
+import VerifyEmailPage from '../components/VerifyEmailPage.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: HomeView },
@@ -13,6 +14,7 @@ const routes = [
   { path: '/register', name: 'Register', component: RegisterPage },
   { path: '/forgot-password', component: ForgotPassword },
   { path: '/reset-password', component: ResetPassword }
+  { path: '/verify-email', component: VerifyEmailPage }
 ];
 
 const router = createRouter({
