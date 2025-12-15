@@ -24,7 +24,7 @@
 - **Container**：Docker + Docker Compose
 - **建構工具**：Maven
 - **部署平台**：Render（自動部署）
-- **郵件服務**：Resend + Cloudflare（支援密碼重置與通知）
+- **郵件服務**：Resend + Cloudflare（支援註冊驗證、密碼重置與通知）
 - **排程**：Cronjobs（定時任務與網站運維）
 
 ---
