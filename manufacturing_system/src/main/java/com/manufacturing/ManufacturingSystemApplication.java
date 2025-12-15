@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
     exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class}
 )
 
-@SpringBootApplication
+
 public class ManufacturingSystemApplication {
 
 	public static void main(String[] args) {
