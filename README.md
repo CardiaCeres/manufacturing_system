@@ -5,6 +5,9 @@
 本系統已完成部署，可透過以下網址體驗實際功能：  
 **線上展示網址**：https://manufacturing-system-latest.onrender.com
 
+## 網站使用時間 為保障系統效能與資料完整性，本網站設定使用時間如下： 
+- **每日開放時間**：上午 8:00 至晚上 6:00
+
 ---
  
 [![Live on Render](https://img.shields.io/badge/render-live-success?logo=render&style=flat)](https://your-app-name.onrender.com)
